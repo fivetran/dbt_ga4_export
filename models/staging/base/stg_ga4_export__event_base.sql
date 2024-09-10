@@ -1,0 +1,12 @@
+{{
+    fivetran_utils.union_data(
+        table_identifier='event', 
+        database_variable='ga4_export_database', 
+        schema_variable='ga4_export_schema', 
+        default_database=target.database,
+        default_schema='ga4_export',
+        default_variable='core_company',
+        union_schema_variable='ga4_export_union_schemas',
+        union_database_variable='ga4_export_union_databases'
+    )
+}}
