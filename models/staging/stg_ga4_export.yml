@@ -1,7 +1,67 @@
 version: 2
 
 models:
-  - name: stg_ga4_export__event
-    description: 
-
-    columns: 
+      - name: stg_ga4_export__event
+        description: >
+          Each record represents an event triggered by a user in GA4, containing details such as event name, timestamp, user ID, and associated parameters.
+        columns:
+          - name: fivetran_id
+            description: The unique identifier for this event record.
+          - name: fivetran_synced
+            description: Timestamp indicating when this record was last synced from the source.
+          - name: bundle_sequence_id
+            description: The sequence ID of the bundle that contains this event.
+          - name: event_date
+            description: The date when the event occurred.
+          - name: device_category
+            description: The category of the device used (e.g., mobile, desktop).
+          - name: geo_city
+            description: The city where the event was triggered.
+          - name: geo_country
+            description: The country where the event was triggered.
+          - name: geo_region
+            description: The region where the event was triggered.
+          - name: event_name
+            description: The name of the event, such as 'purchase', 'user_engagement'.
+          - name: platform
+            description: The platform on which the event occurred (e.g., iOS, Android).
+          - name: event_timestamp
+            description: The timestamp when the event occurred.
+          - name: traffic_source_medium
+            description: The medium through which the user arrived (e.g., organic, paid).
+          - name: traffic_source_name
+            description: The name of the traffic source.
+          - name: traffic_source_source
+            description: The source of the traffic (e.g., google, facebook).
+          - name: user_first_touch_timestamp
+            description: The timestamp of the user's first touch.
+          - name: user_id
+            description: The unique identifier for the user.
+          - name: user_pseudo_id
+            description: The unique pseudo-identifier for the user, used to track anonymous sessions.
+          - name: event_value_usd
+            description: The monetary value associated with this event, in USD.
+          - name: ecommerce_purchase_revenue_usd
+            description: The revenue from ecommerce purchases in USD.
+          - name: ecommerce_refund_value_usd
+            description: The value of refunds in USD.
+          - name: ecommerce_total_item_quantity
+            description: The total quantity of items in ecommerce transactions.
+          - name: ecommerce_transaction_id
+            description: The identifier for the ecommerce transaction.
+          - name: event_dimensions_hostname
+            description: The hostname associated with the event.
+          - name: video_duration
+            description: The duration of the video in milliseconds.
+          - name: percent_scrolled
+            description: The percentage of the page scrolled.
+          - name: campaign
+            description: The campaign associated with the event.
+          - name: gclid
+            description: The Google Click ID associated with the event.
+          - name: medium
+            description: The medium associated with the event.
+          - name: source
+            description: The source associated with the event.
+          - name: property
+            description: The property associated with the event (e.g., website or app).
