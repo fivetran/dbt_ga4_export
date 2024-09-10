@@ -2,6 +2,7 @@ with base as (
 
     select * 
     from {{ ref('stg_ga4_export__event_base') }}
+    limit 1000 -- tmp limit
 
 ),
 
@@ -10,14 +11,14 @@ fields as (
     select
         {{
             fivetran_utils.fill_staging_columns(
-                source_columns=adapter.get_columns_in_relation(ref('raw_ga4_export_4_export__event')),
+                source_columns=adapter.get_columns_in_relation(ref('stg_ga4_export__event_base')),
                 staging_columns=get_event_columns()
             )
         }}
         -- Using source relation to account for different union schemas and databases if needed
         {{ fivetran_utils.source_relation(
             union_schema_variable='ga4_export_union_schemas', 
-            union_database_variable='ga4_export_union_databases') 
+            union_database_variable='ga4_export_union_databases')
         }}
     from base
 
@@ -26,7 +27,7 @@ fields as (
 final as (
     
     select
-        cast(_fivetran_id as {{ dbt.type_string() }}) as fivetran_id,
+        cast(_fivetran_id as {{ dbt.type_string() }}) as unique_event_id,
         cast(_fivetran_synced as {{ dbt.type_timestamp() }}) as fivetran_synced,
         cast(bundle_sequence_id as {{ dbt.type_int() }}) as bundle_sequence_id,
         cast(date as {{ dbt.type_string() }}) as event_date,

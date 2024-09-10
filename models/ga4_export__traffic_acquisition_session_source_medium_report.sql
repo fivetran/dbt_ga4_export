@@ -1,31 +1,31 @@
 with events_base as (
 
     select * 
-    from {{ ref('stg_google_analytics_4_event') }}
+    from {{ ref('stg_ga4_export__event') }}
 
 ),
 
 traffic_acquisition_report as (
     
-    select 
-        _fivetran_id,
+    select
         event_date as date,
-        property,
-        _fivetran_synced,
-        sum(engaged_sessions) as engaged_sessions,
-        avg(engagement_rate) as engagement_rate,
-        count(*) as event_count,
-        avg(event_count / sessions) as events_per_session,
-        count(distinct case when name in var('conversion_events') then user_id end) as key_events,
-        session_medium as session_medium,
-        session_source as session_source,
-        count(distinct session_id) as sessions,
+        null as property,
+        fivetran_synced,
+        traffic_source_medium as session_medium,
+        traffic_source_source as session_source,
+        count(distinct case when event_name = 'user_engagement' then session_id end) as engaged_sessions,
+        count(distinct session_id) as total_sessions,
+        count(distinct case when event_name = 'user_engagement' then session_id end)/ count(distinct session_id) as engagement_rate_comparison,
+        avg(case when event_name = 'user_engagement' then 1 else 0 end) as engagement_rate,
+        count(unique_event_id) as event_count,
+        (count(unique_event_id)) / count(distinct session_id) as events_per_session,
+        count(distinct case when name in ({{ "'" ~ var('conversion_events') | join("', '") ~ "'" }}) then unique_event_id end) as key_events,
         sum(ecommerce_purchase_revenue_usd) as total_revenue,
         count(distinct user_id) as total_users,
-        sum(user_engagement_duration) as user_engagement_duration
+        sum(case when event_name = 'user_engagement' then param_engagement_time_msec / 1000 end)/ count(distinct user_id) as user_engagement_duration
 
     from events_base
-    group by 1, 2, 3, 4, 5, 6
+    group by 1, 2, 3, 4, 5
 
 )
 

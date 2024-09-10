@@ -5,7 +5,7 @@
         schema_variable='ga4_export_schema', 
         default_database=target.database,
         default_schema='ga4_export',
-        default_variable='core_company',
+        default_variable='event',
         union_schema_variable='ga4_export_union_schemas',
         union_database_variable='ga4_export_union_databases'
     )

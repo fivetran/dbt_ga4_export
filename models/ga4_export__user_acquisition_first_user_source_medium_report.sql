@@ -1,30 +1,29 @@
 with events_base as (
 
     select * 
-    from {{ ref('stg_google_analytics_4_event') }}
+    from {{ ref('stg_ga4_export__event') }}
 
 ),
 
 user_acquisition_report as (
     
-    select 
-        _fivetran_id,
+    select
         event_date as date,
-        property,
-        _fivetran_synced,
-        count(distinct case when user_first_touch_timestamp is not null then user_id end) as new_users,
-        sum(engaged_sessions) as engaged_sessions,
-        avg(engagement_rate) as engagement_rate,
-        count(*) as event_count,
+        null as property,
+        fivetran_synced,
         first_user_medium as first_user_medium,
         first_user_source as first_user_source,
-        count(distinct case when name in ('purchase', 'sign_up') then user_id end) as key_events,
-        sum(ecommerce_purchase_revenue_usd) as total_revenue,
+        sum(engaged_sessions) as engaged_sessions,
+        avg(case when event_name = 'user_engagement' then 1 else 0 end) as engagement_rate,
+        count(unique_event_id) as event_count,
+        count(distinct case when name in ({{ "'" ~ var('conversion_events') | join("', '") ~ "'" }}) then unique_event_id end) as key_events,
+        count(distinct case when user_first_touch_timestamp is not null then user_id end) as new_users,
         count(distinct user_id) as total_users,
-        sum(user_engagement_duration) as user_engagement_duration
+        sum(ecommerce_purchase_revenue_usd) as total_revenue,
+        avg(user_engagement_duration) as user_engagement_duration
 
     from events_base
-    group by 1, 2, 3, 4, 5, 6
+    group by 1, 2, 3, 4, 5
 
 )
 
