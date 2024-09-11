@@ -1,0 +1,16 @@
+name: 'ga4_export_integration_tests'
+version: '0.1.0'
+config-version: 2
+profile: 'integration_tests'
+
+models:
+  ga4_export:
+    +schema: "{{ 'ga4_export_sqlw_tests' if target.name == 'databricks-sql' else 'ga4_export' }}"
+    # +schema: "ga4_export_{{ var('directed_schema','dev') }}" ## To be used for validation testing
+
+vars:
+  ga4_export_schema: ga4_export_integration_tests_1
+
+dispatch:
+  - macro_namespace: dbt_utils
+    search_order: ['spark_utils', 'dbt_utils']

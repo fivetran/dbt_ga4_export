@@ -2,6 +2,8 @@ with base as (
 
     select * 
     from {{ ref('stg_ga4_export__event_base') }}
+
+    order by user_pseudo_id -- tmp order
     limit 1000 -- tmp limit
 
 ),
@@ -54,9 +56,9 @@ final as (
         cast(param_percent_scrolled as {{ dbt.type_float() }}) as percent_scrolled,
         param_campaign as campaign,
         cast(param_gclid as {{ dbt.type_string() }}) as gclid,
-        param_medium as medium,
+        param_medium as medium, -- need to check if param_ fields are custom and therefore we can't use them
         param_source as source,
-        cast(param_ga_session_id as {{ dbt.type_string() }}) as param_ga_session_id,
+        cast(param_ga_session_id as {{ dbt.type_string() }}) as param_ga_session_id, -- maybe we don't use this and instead bring in ga_session_id from event_param
         param_ga_session_number,
         param_engagement_time_msec,
         param_engaged_session_event,
