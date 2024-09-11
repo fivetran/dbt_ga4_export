@@ -29,7 +29,12 @@
     {"name": "param_campaign", "datatype": dbt.type_string()},
     {"name": "param_gclid", "datatype": dbt.type_string()},
     {"name": "param_medium", "datatype": dbt.type_string()},
-    {"name": "param_source", "datatype": dbt.type_string()}
+    {"name": "param_source", "datatype": dbt.type_string()},
+    {"name": "param_ga_session_id", "datatype": dbt.type_string()},
+    {"name": "param_ga_session_number", "datatype": dbt.type_float()},
+    {"name": "param_engagement_time_msec", "datatype": dbt.type_float()},
+    {"name": "param_engaged_session_event", "datatype": dbt.type_string()},
+    {"name": "param_session_engaged", "datatype": "boolean"}
 ] %}
 
 {{ return(columns) }}
