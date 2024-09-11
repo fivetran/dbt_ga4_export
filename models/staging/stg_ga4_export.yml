@@ -40,7 +40,7 @@ models:
           - name: user_id
             description: The unique identifier for the user.
           - name: user_pseudo_id
-            description: The unique pseudo-identifier for the user, used to track anonymous sessions.
+            description: The unique pseudo-identifier for the user, used to track anonymous user sessions.
           - name: event_value_usd
             description: The monetary value associated with this event, in USD.
           - name: ecommerce_purchase_revenue_usd
@@ -65,5 +65,13 @@ models:
             description: The medium associated with the event.
           - name: source
             description: The source associated with the event.
-          - name: property
-            description: The property associated with the event (e.g., website or app).
+          - name: param_ga_session_id
+            description: The GA session ID associated with the event.
+          - name: param_ga_session_number
+            description: The session number for the user.
+          - name: param_engagement_time_msec
+            description: The time spent by the user engaging with the app or website, in milliseconds.
+          - name: param_engaged_session_event
+            description: Whether the event was part of an engaged session.
+          - name: param_session_engaged
+            description: Whether the user was engaged during the session.

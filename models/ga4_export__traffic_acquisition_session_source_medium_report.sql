@@ -1,7 +1,9 @@
-with events_base as (
+-- traffic_acquisition_session_source_medium_report
+
+with events_sessionized as (
 
     select * 
-    from {{ ref('stg_ga4_export__event') }}
+    from {{ ref('int_ga4_export__sessionized_events') }}
 
 ),
 
@@ -19,12 +21,12 @@ traffic_acquisition_report as (
         avg(case when event_name = 'user_engagement' then 1 else 0 end) as engagement_rate,
         count(unique_event_id) as event_count,
         (count(unique_event_id)) / count(distinct session_id) as events_per_session,
-        count(distinct case when name in ({{ "'" ~ var('conversion_events') | join("', '") ~ "'" }}) then unique_event_id end) as key_events,
+        count(distinct case when event_name in ({{ "'" ~ var('conversion_events') | join("', '") ~ "'" }}) then unique_event_id end) as key_events,
         sum(ecommerce_purchase_revenue_usd) as total_revenue,
         count(distinct user_id) as total_users,
         sum(case when event_name = 'user_engagement' then param_engagement_time_msec / 1000 end)/ count(distinct user_id) as user_engagement_duration
 
-    from events_base
+    from events_sessionized
     group by 1, 2, 3, 4, 5
 
 )
