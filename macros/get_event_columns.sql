@@ -21,6 +21,8 @@
     {"name": "value_in_usd", "datatype": dbt.type_float()},
     {"name": "ecommerce_purchase_revenue_in_usd", "datatype": dbt.type_float()},
     {"name": "ecommerce_refund_value_in_usd", "datatype": dbt.type_float()},
+    {"name": "ecommerce_purchase_revenue", "datatype": dbt.type_float()},
+    {"name": "ecommerce_refund_value", "datatype": dbt.type_float()},
     {"name": "ecommerce_total_item_quantity", "datatype": dbt.type_int()},
     {"name": "ecommerce_transaction_id", "datatype": dbt.type_string()},
     {"name": "event_dimensions_hostname", "datatype": dbt.type_string()},

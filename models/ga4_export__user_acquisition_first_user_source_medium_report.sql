@@ -24,7 +24,7 @@ with events_sessionized as (
         count(distinct case when event_name in ({{ "'" ~ var('conversion_events') | join("', '") ~ "'" }}) then unique_event_id end) as key_events,
         count(distinct case when user_first_touch_timestamp is not null then user_id end) as new_users,
         count(distinct user_id) as total_users,
-        sum(ecommerce_purchase_revenue_usd) as total_revenue,
+        sum(ecommerce_purchase_revenue) as total_revenue,
         sum(case when event_name = 'user_engagement' then param_engagement_time_msec / 1000 end)/ count(distinct user_id) as user_engagement_duration
 
     from events_sessionized

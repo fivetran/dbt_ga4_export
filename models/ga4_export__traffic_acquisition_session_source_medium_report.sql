@@ -22,7 +22,7 @@ traffic_acquisition_report as (
         count(unique_event_id) as event_count,
         (count(unique_event_id)) / count(distinct session_id) as events_per_session,
         count(distinct case when event_name in ({{ "'" ~ var('conversion_events') | join("', '") ~ "'" }}) then unique_event_id end) as key_events,
-        sum(ecommerce_purchase_revenue_usd) as total_revenue,
+        sum(ecommerce_purchase_revenue) as total_revenue,
         count(distinct user_id) as total_users,
         sum(case when event_name = 'user_engagement' then param_engagement_time_msec / 1000 end)/ count(distinct user_id) as user_engagement_duration
 

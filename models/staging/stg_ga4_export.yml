@@ -45,8 +45,12 @@ models:
             description: The monetary value associated with this event, in USD.
           - name: ecommerce_purchase_revenue_usd
             description: The revenue from ecommerce purchases in USD.
+          - name: ecommerce_purchase_revenue
+            description: Purchase revenue of this event, represented in local currency with standard unit. Populated for purchase event only.
           - name: ecommerce_refund_value_usd
             description: The value of refunds in USD.
+          - name: ecommerce_refund_value
+            description: The amount of refund in this event, represented in local currency with standard unit. Populated for refund event only.
           - name: ecommerce_total_item_quantity
             description: The total quantity of items in ecommerce transactions.
           - name: ecommerce_transaction_id

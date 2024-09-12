@@ -14,7 +14,7 @@ conversions_report as (
         fivetran_synced,
         event_name,
         count(distinct unique_event_id) as key_events,
-        sum(ecommerce_purchase_revenue_usd) as total_revenue,
+        sum(ecommerce_purchase_revenue) as total_revenue,
         count(distinct user_id) as total_users
 
     from events_base
