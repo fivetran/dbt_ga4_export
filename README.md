@@ -14,3 +14,6 @@
 </p>
 
 # WORK IN PROGRESS!
+
+
+<!-- there are two sync modes from the connector. call out that this package is only for the columns sync mode, not the json sync mode -->
