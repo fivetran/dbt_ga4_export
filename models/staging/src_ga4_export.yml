@@ -3,7 +3,7 @@ version: 2
 sources: 
   - name: ga4_export
     database: "{% if target.type != 'spark' %}{{ var('ga4_export_database', target.database) }}{% endif %}" # add var config to dbt_project.yml
-    schema: "{{ var('ga4_export_schema', 'ga4_export')}}"
+    schema: "{{ var('ga4_export_schema', 'google_analytics_4_export')}}"
 
     loader: fivetran
     loaded_at_field: _fivetran_synced
@@ -55,9 +55,13 @@ sources:
           - name: value_in_usd
             description: The monetary value associated with this event, in USD.
           - name: ecommerce_purchase_revenue_in_usd
-            description: The revenue from ecommerce purchases in USD.
+            description: Purchase revenue of this event, represented in USD with standard unit. Populated for purchase event only.
+          - name: ecommerce_purchase_revenue
+            description: Purchase revenue of this event, represented in local currency with standard unit. Populated for purchase event only.
           - name: ecommerce_refund_value_in_usd
-            description: The value of refunds in USD.
+            description: The amount of refund in this event, represented in USD with standard unit. Populated for refund event only.
+          - name: ecommerce_refund_value
+            description: The amount of refund in this event, represented in local currency with standard unit. Populated for refund event only.
           - name: ecommerce_total_item_quantity
             description: The total quantity of items in ecommerce transactions.
           - name: ecommerce_transaction_id
