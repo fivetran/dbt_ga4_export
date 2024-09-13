@@ -13,7 +13,7 @@ events_report as (
         fivetran_synced,
         event_name,
         count(unique_event_id) as event_count,
-        (count(unique_event_id) / count(distinct user_id)) as event_count_per_user,
+        (count(unique_event_id) / nullif(count(distinct user_id),0)) as event_count_per_user,
         sum(ecommerce_purchase_revenue) as total_revenue,
         count(distinct user_id) as total_users
 
