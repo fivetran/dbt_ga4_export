@@ -13,7 +13,7 @@ models:
           - unique
           - not_null
 
-      - name: date
+      - name: event_date
         description: Date the report was generated.
 
       - name: property
@@ -64,7 +64,7 @@ models:
           - unique
           - not_null
 
-      - name: date
+      - name: event_date
         description: Date the report was generated.
 
       - name: property
@@ -118,7 +118,7 @@ models:
           - unique
           - not_null
 
-      - name: date
+      - name: event_date
         description: Date the report was generated.
 
       - name: property
@@ -154,7 +154,7 @@ models:
           - unique
           - not_null
 
-      - name: date
+      - name: event_date
         description: Date the report was generated.
 
       - name: property

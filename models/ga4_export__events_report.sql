@@ -8,7 +8,7 @@ with events_base as (
 events_report as (
     
     select
-        event_date as date,
+        event_date,
         null as property,
         fivetran_synced,
         event_name,

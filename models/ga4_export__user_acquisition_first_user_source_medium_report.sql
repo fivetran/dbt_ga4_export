@@ -13,7 +13,7 @@ with derived_event_fields as (
 ), user_acquisition_report as (
     
     select
-        event_date as date,
+        event_date,
         null as property,
         fivetran_synced,
         user_first_event.first_user_medium as first_user_medium,

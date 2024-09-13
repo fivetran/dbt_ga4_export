@@ -10,7 +10,7 @@ with derived_event_fields as (
 traffic_acquisition_report as (
     
     select
-        event_date as date,
+        event_date,
         null as property,
         fivetran_synced,
         traffic_source_medium as session_medium,
