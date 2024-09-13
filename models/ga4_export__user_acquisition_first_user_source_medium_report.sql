@@ -1,9 +1,9 @@
 -- user_source_medium_report
 
-with events_sessionized as (
+with derived_event_fields as (
 
     select * 
-    from {{ ref('int_ga4_export__sessionized_events') }}
+    from {{ ref('int_ga4_export__derived_event_fields') }}
 
 ), user_first_event as (
 
@@ -25,11 +25,11 @@ with events_sessionized as (
         count(distinct case when user_first_touch_timestamp is not null then user_id end) as new_users,
         count(distinct user_id) as total_users,
         sum(ecommerce_purchase_revenue) as total_revenue,
-        sum(case when event_name = 'user_engagement' then param_engagement_time_msec / 1000 end)/ nullif(count(distinct user_id),0) as user_engagement_duration
+        sum(case when event_name = 'user_engagement' then engagement_time_msec / 1000 end)/ nullif(count(distinct user_id),0) as user_engagement_duration
 
-    from events_sessionized
+    from derived_event_fields
     left join user_first_event
-        on events_sessionized.user_pseudo_id = user_first_event.user_pseudo_id
+        on derived_event_fields.user_pseudo_id = user_first_event.user_pseudo_id
 
     group by 1, 2, 3, 4, 5
 

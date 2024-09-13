@@ -14,6 +14,15 @@ with event_base as (
 
     select
         *,
+        -- Only calculate for 'user_engagement' events
+        case 
+            when event_name = 'user_engagement' 
+                and lag(event_timestamp) over (partition by user_pseudo_id order by event_timestamp) is not null 
+            then 
+                {{ dbt.datediff('previous_event_timestamp', 'event_timestamp', 'second') }} * 1000 -- Convert to milliseconds
+            else null
+        end as derived_engagement_time_msec,
+
         -- Generate session index based on 30-minute inactivity
         sum(
             case 
@@ -30,7 +39,10 @@ with event_base as (
 ), final_sessionized as (
 
     select
-        se.*,
+        *,
+        -- Coalesce param_engagement_time_msec or use the derived_engagement_time_msec as engagement_time in milliseconds
+        coalesce(param_engagement_time_msec,derived_engagement_time_msec) as engagement_time_msec,
+        
         -- Coalesce param_ga_session_id or create session_id from session_index
         coalesce(se.param_ga_session_id, concat(se.user_pseudo_id, '_', se.platform, '_', se.session_index)) as session_id
     from sessionized_events se

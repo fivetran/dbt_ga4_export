@@ -1,6 +1,6 @@
-with sessionized_events as (
+with derived_event_fields as (
     select *
-    from {{ ref('int_ga4_export__sessionized_events') }}
+    from {{ ref('int_ga4_export__derived_event_fields') }}
 ),
 
 sessions_aggregate as (
@@ -12,7 +12,7 @@ sessions_aggregate as (
         sum(param_engagement_time_msec) / 1000 as total_session_engagement_time_sec,
         count(distinct event_name) as total_events,
         max(case when param_session_engaged = 1 then 1 else 0 end) as engaged_session -- maybe instead use event_name = 'user_engagement'
-    from sessionized_events
+    from derived_event_fields
     group by session_id
 )
 

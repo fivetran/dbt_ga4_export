@@ -3,8 +3,8 @@ with base as (
     select * 
     from {{ ref('stg_ga4_export__event_base') }}
 
-    order by user_pseudo_id -- tmp order
-    limit 1000 -- tmp limit
+    where date = '2024-05-10'
+    -- order by user_pseudo_id -- tmp order
 
 ),
 
@@ -32,12 +32,12 @@ final as (
         cast(_fivetran_id as {{ dbt.type_string() }}) as unique_event_id,
         cast(_fivetran_synced as {{ dbt.type_timestamp() }}) as fivetran_synced,
         cast(bundle_sequence_id as {{ dbt.type_int() }}) as bundle_sequence_id,
-        cast(date as {{ dbt.type_string() }}) as event_date,
+        event_date, -- renamed in macro due to reserved word
         device_category,
         geo_city,
         geo_country,
         geo_region,
-        name as event_name,
+        event_name, -- renamed in macro due to reserved word
         platform,
         cast(timestamp as {{ dbt.type_timestamp() }}) as event_timestamp,
         traffic_source_medium,

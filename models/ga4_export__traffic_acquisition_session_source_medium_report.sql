@@ -1,9 +1,9 @@
 -- traffic_acquisition_session_source_medium_report
 
-with events_sessionized as (
+with derived_event_fields as (
 
     select * 
-    from {{ ref('int_ga4_export__sessionized_events') }}
+    from {{ ref('int_ga4_export__derived_event_fields') }}
 
 ),
 
@@ -24,9 +24,9 @@ traffic_acquisition_report as (
         count(distinct case when event_name in ({{ "'" ~ var('conversion_events') | join("', '") ~ "'" }}) then unique_event_id end) as key_events,
         sum(ecommerce_purchase_revenue) as total_revenue,
         count(distinct user_id) as total_users,
-        sum(case when event_name = 'user_engagement' then param_engagement_time_msec / 1000 end)/ nullif(count(distinct user_id),0) as user_engagement_duration
+        sum(case when event_name = 'user_engagement' then engagement_time_msec / 1000 end)/ nullif(count(distinct user_id),0) as user_engagement_duration
 
-    from events_sessionized
+    from derived_event_fields
     group by 1, 2, 3, 4, 5
 
 )
