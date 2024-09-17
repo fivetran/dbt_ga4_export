@@ -21,7 +21,7 @@ with derived_event_fields as (
         count(distinct case when event_name = 'user_engagement' then session_id end) as engaged_sessions,
         avg(case when event_name = 'user_engagement' then 1 else 0 end) as engagement_rate,
         count(unique_event_id) as event_count,
-        count(distinct case when event_name in ({{ "'" ~ var('conversion_events') | join("', '") ~ "'" }}) then unique_event_id end) as key_events,
+        count(distinct case when event_name in ({{ "'" ~ var('key_events') | join("', '") ~ "'" }}) then unique_event_id end) as key_events,
         count(distinct case when user_first_touch_timestamp is not null then user_id end) as new_users,
         count(distinct user_pseudo_id) as total_users,
         sum(ecommerce_purchase_revenue) as total_revenue,

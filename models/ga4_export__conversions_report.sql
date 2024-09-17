@@ -2,7 +2,7 @@ with events_base as (
 
     select * 
     from {{ ref('stg_ga4_export__event') }}
-    where event_name in ({{ "'" ~ var('conversion_events') | join("', '") ~ "'" }})
+    where event_name in ({{ "'" ~ var('key_events') | join("', '") ~ "'" }})
 
 ),
 
