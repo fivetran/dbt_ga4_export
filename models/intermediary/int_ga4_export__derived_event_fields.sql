@@ -26,7 +26,7 @@ with event_base as (
         -- Generate session index based on 30-minute inactivity
         sum(
             case 
-                -- Use TIMESTAMP_DIFF to check time difference in minutes
+                -- check time difference in minutes
                 when {{ dbt.datediff('previous_event_timestamp', 'event_timestamp', 'minute')}} > 30 
                     or previous_event_timestamp is null
                 then 1 

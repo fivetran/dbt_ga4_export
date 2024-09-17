@@ -15,7 +15,7 @@ conversions_report as (
         event_name,
         count(distinct unique_event_id) as key_events,
         sum(ecommerce_purchase_revenue) as total_revenue,
-        count(distinct user_id) as total_users
+        count(distinct user_pseudo_id) as total_users
 
     from events_base
     group by 1, 2, 3, 4

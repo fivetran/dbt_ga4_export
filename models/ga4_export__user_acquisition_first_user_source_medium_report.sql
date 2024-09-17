@@ -23,7 +23,7 @@ with derived_event_fields as (
         count(unique_event_id) as event_count,
         count(distinct case when event_name in ({{ "'" ~ var('conversion_events') | join("', '") ~ "'" }}) then unique_event_id end) as key_events,
         count(distinct case when user_first_touch_timestamp is not null then user_id end) as new_users,
-        count(distinct user_id) as total_users,
+        count(distinct user_pseudo_id) as total_users,
         sum(ecommerce_purchase_revenue) as total_revenue,
         round(sum(case when event_name = 'user_engagement' then engagement_time_msec / 1000 end)/ nullif(count(distinct user_id),0), 2) as user_engagement_duration
 

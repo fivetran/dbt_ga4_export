@@ -15,7 +15,7 @@ events_report as (
         count(unique_event_id) as event_count,
         (count(unique_event_id) / nullif(count(distinct user_id),0)) as event_count_per_user,
         sum(ecommerce_purchase_revenue) as total_revenue,
-        count(distinct user_id) as total_users
+        count(distinct user_pseudo_id) as total_users
 
     from events_base
     group by 1, 2, 3, 4
