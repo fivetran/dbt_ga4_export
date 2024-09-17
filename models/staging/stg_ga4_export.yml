@@ -79,3 +79,5 @@ models:
             description: Whether the event was part of an engaged session.
           - name: param_session_engaged
             description: Whether the user was engaged during the session.
+          - name: source_relation
+            description: The source of the record if the unioning functionality is being used. For example, this could be the case if you're syncing multiple properties. 

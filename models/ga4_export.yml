@@ -3,7 +3,7 @@ version: 2
 models:
   - name: user_acquisition_first_user_source_medium_report
     description: >
-      GA4 User Acquisition Report by First User Source and Medium. This report provides insights on how new users 
+      GA4 report that tracks how new users 
       are acquired based on the first user medium and source, with engagement metrics and total revenue.
     
     columns:
@@ -54,7 +54,7 @@ models:
 
   - name: traffic_acquisition_session_source_medium_report
     description: >
-      GA4 Traffic Acquisition Report by Session Source and Medium. This report tracks user sessions, events, 
+      GA4 report that tracks user sessions, events, 
       and total revenue by session source and medium, offering insights into which traffic sources drive user engagement.
     
     columns:
@@ -108,7 +108,7 @@ models:
 
   - name: events_report
     description: >
-      GA4 Events Report that tracks interactions (events) across the app or website, summarizing event counts, 
+      GA4 report that tracks interactions (events) across the app or website, summarizing event counts, 
       total revenue generated from events, and user engagement.
     
     columns:
@@ -144,7 +144,7 @@ models:
 
   - name: conversions_report
     description: >
-      GA4 Conversions Report that tracks conversion events, total revenue, and key events, providing insights 
+      GA4 report that tracks conversion events, total revenue, and key events, providing insights 
       into user conversion behavior and performance.
     
     columns:
