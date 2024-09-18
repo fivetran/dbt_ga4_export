@@ -37,7 +37,7 @@
     {"name": "param_engagement_time_msec", "datatype": dbt.type_float()},
     {"name": "param_engaged_session_event", "datatype": dbt.type_string()},
     {"name": "param_session_engaged", "datatype": "boolean"},
-    {"name": "param_session_engaged", "datatype": "is_intraday"}
+    {"name": "is_intraday", "datatype": "boolean"}
 ] %}
 
 {{ return(columns) }}
