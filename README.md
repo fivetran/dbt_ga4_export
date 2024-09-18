@@ -21,12 +21,12 @@
 These tables are designed to replicate common GA4 reports. The following provides a list of all tables provided by this package along with their corresponding GA4 report.
 > TIP: See more details about these tables in the package's [dbt docs site](https://fivetran.github.io/dbt_ga4_export/#!/overview?).
 
-| **Table** | **GA4 Report** | **Description** |
-|---|---|---|
-| ga4_export__traffic_acquisition_session_source_medium_report | traffic_acquisition_session_source_medium_report | GA4 report that tracks user sessions, events, and total revenue by session source and medium, offering insights into which traffic sources drive user engagement. |
-| ga4_export__user_acquisition_first_user_source_medium_report | user_acquisition_first_user_source_medium_report | GA4 report that tracks how new users are acquired based on the first user medium and source, with engagement metrics and total revenue. |
-| ga4_export__events_report | events_report | GA4 report that tracks interactions (events) across the app or website, summarizing event counts, total revenue generated from events, and user engagement. |
-| ga4_export__conversions_report | conversions_report | GA4 report that tracks conversion events, total revenue, and key events, providing insights into user conversion behavior and performance. |
+| **Table**                                                       | **GA4 Report**                                        | **Description**                                                                                                     |
+|------------------------------------------------------------------|-------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| ga4_export__traffic_acquisition_session_source_medium_report     | traffic_acquisition_session_source_medium_report       | Tracks sessions, events, and revenue by source and medium. Provides insights into traffic sources driving engagement. |
+| ga4_export__user_acquisition_first_user_source_medium_report     | user_acquisition_first_user_source_medium_report       | Tracks how new users are acquired by first user medium and source. Includes engagement metrics and total revenue.     |
+| ga4_export__events_report                                        | events_report                                         | Summarizes event counts, revenue generated from events, and user engagement metrics across the app or website.        |
+| ga4_export__conversions_report                                   | conversions_report                                    | Tracks conversion events, key user actions, and total revenue, offering insights into conversion behavior.            |
 
 <!--section-end-->
 
