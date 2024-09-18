@@ -11,7 +11,7 @@
     {"name": "geo_region", "datatype": dbt.type_string()},
     {"name": "name", "datatype": dbt.type_string(), "alias": "event_name"},
     {"name": "platform", "datatype": dbt.type_string()},
-    {"name": "timestamp", "datatype": dbt.type_timestamp()},
+    {"name": "timestamp", "datatype": dbt.type_timestamp(), "alias": "event_timestamp"},
     {"name": "traffic_source_medium", "datatype": dbt.type_string()},
     {"name": "traffic_source_name", "datatype": dbt.type_string()},
     {"name": "traffic_source_source", "datatype": dbt.type_string()},
