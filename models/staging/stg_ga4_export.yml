@@ -81,3 +81,5 @@ models:
             description: Whether the user was engaged during the session.
           - name: source_relation
             description: The source of the record if the unioning functionality is being used. For example, this could be the case if you're syncing multiple properties. 
+          - name: is_intraday
+            description: to be completed

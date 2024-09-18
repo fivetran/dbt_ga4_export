@@ -5,6 +5,15 @@ with base as (
 
     where date = '2024-05-10'
     -- order by user_pseudo_id -- tmp order
+    -- where 
+
+    -- {% if is_incremental() %}
+    -- event_date >= {{ ga4_export.ga4_export_lookback(from_date="max(event_date)", interval=var('lookback_window', 7), datepart='day') }}
+
+    -- {% else %}
+    -- -- limit date range on the first run / refresh
+    -- event_date >= {{ "'" ~ var('ga4_export_date_start',  '2024-01-01') ~ "'" }} 
+    -- {% endif %}
 
 ),
 
@@ -65,6 +74,7 @@ final as (
         param_engagement_time_msec,
         param_engaged_session_event,
         param_session_engaged,
+        is_intraday,
         source_relation
 
     from fields

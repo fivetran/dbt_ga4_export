@@ -90,3 +90,5 @@ sources:
             description: Whether the event was part of an engaged session.
           - name: param_session_engaged
             description: Whether the user was engaged during the session.
+          - name: is_intraday
+            description: to be completed
