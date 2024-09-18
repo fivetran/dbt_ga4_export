@@ -1,9 +1,28 @@
 -- user_source_medium_report
+{{
+    config(
+        materialized='incremental' if ga4_export.is_incremental_compatible() else 'table',
+        unique_key='unique_key',
+        incremental_strategy='insert_overwrite' if target.type in ('bigquery', 'spark', 'databricks') else 'delete+insert',
+        partition_by={
+            "field": "event_date", 
+            "data_type": "date"
+            } if target.type not in ('spark','databricks') 
+            else ['event_date'],
+        cluster_by=['event_date', 'first_user_medium', 'first_user_source'],
+        file_format='delta'
+    )
+}}
 
 with derived_event_fields as (
 
-    select * 
+    select *
     from {{ ref('int_ga4_export__derived_event_fields') }}
+        -- made incremental upstream
+
+    {% if is_incremental() %}
+    where event_date >= {{ ga4_export.ga4_export_lookback(from_date="max(event_date)", interval=7, datepart='day') }}
+    {% endif %}
 
 ), user_first_event as (
 
@@ -14,8 +33,7 @@ with derived_event_fields as (
     
     select
         event_date,
-        null as property,
-        fivetran_synced,
+        source_relation,
         user_first_event.first_user_medium as first_user_medium,
         user_first_event.first_user_source as first_user_source,
         count(distinct case when event_name = 'user_engagement' then session_id end) as engaged_sessions,
@@ -31,9 +49,11 @@ with derived_event_fields as (
     left join user_first_event
         on derived_event_fields.user_pseudo_id = user_first_event.user_pseudo_id
 
-    group by 1, 2, 3, 4, 5
+    group by 1, 2, 3, 4
 
 )
 
-select *
+select
+    *,
+    {{ dbt_utils.generate_surrogate_key(['event_date', 'first_user_medium', 'first_user_source', 'source_relation']) }} as unique_key
 from user_acquisition_report

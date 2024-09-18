@@ -1,6 +1,25 @@
+{{
+    config(
+        materialized='incremental' if ga4_export.is_incremental_compatible() else 'table',
+        unique_key='unique_key',
+        incremental_strategy='insert_overwrite' if target.type in ('bigquery', 'spark', 'databricks') else 'delete+insert',
+        partition_by={
+            "field": "event_date", 
+            "data_type": "date"
+            } if target.type not in ('spark','databricks') 
+            else ['event_date'],
+        cluster_by=['event_name', 'event_date'],
+        file_format='delta'
+    )
+}}
+
 with event_base as (
     select *
     from {{ ref('stg_ga4_export__event') }}
+
+    {% if is_incremental() %}
+    where event_date >= {{ ga4_export.ga4_export_lookback(from_date="max(event_date)", interval=7, datepart='day') }}
+    {% endif %}
 
 ), lagged_events as (
 

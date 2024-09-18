@@ -1,20 +1,29 @@
+{{
+    config(
+        materialized='incremental' if ga4_export.is_incremental_compatible() else 'table',
+        unique_key='unique_key',
+        incremental_strategy='insert_overwrite' if target.type in ('bigquery', 'spark', 'databricks') else 'delete+insert',
+        partition_by={
+            "field": "event_date", 
+            "data_type": "date"
+            } if target.type not in ('spark','databricks') 
+            else ['event_date'],
+        cluster_by=['event_name', 'event_date', 'bundle_sequence_id'],
+        file_format='delta'
+    )
+}}
+
 with base as (
 
     select * 
     from {{ ref('stg_ga4_export__event_base') }}
 
-    where date = '2024-05-10'
-    -- order by user_pseudo_id -- tmp order
-    -- where 
-
-    -- {% if is_incremental() %}
-    -- event_date >= {{ ga4_export.ga4_export_lookback(from_date="max(event_date)", interval=var('lookback_window', 7), datepart='day') }}
-
-    -- {% else %}
-    -- -- limit date range on the first run / refresh
-    -- event_date >= {{ "'" ~ var('ga4_export_date_start',  '2024-01-01') ~ "'" }} 
-    -- {% endif %}
-
+    {% if is_incremental() %}
+    where date >= {{ ga4_export.ga4_export_lookback(from_date="max(event_date)", interval=7, datepart='day') }}
+    {% else %}
+    -- Initial load or full refresh
+    where date >= {{ "'" ~ var('ga4_export_date_start',  '2024-01-01') ~ "'" }}
+    {% endif %}
 ),
 
 fields as (
@@ -48,7 +57,7 @@ final as (
         geo_region,
         event_name, -- renamed in macro due to reserved word
         platform,
-        cast(timestamp as {{ dbt.type_timestamp() }}) as event_timestamp,
+        cast(event_timestamp as {{ dbt.type_timestamp() }}) as event_timestamp, -- renamed in macro due to reserved word
         traffic_source_medium,
         traffic_source_name,
         traffic_source_source,
@@ -81,5 +90,8 @@ final as (
 
 )
 
-select *
+select
+    *,
+    {{ dbt_utils.generate_surrogate_key(['user_pseudo_id', 'event_timestamp', 'event_name']) }} as unique_key,
 from final
+where is_intraday = false
