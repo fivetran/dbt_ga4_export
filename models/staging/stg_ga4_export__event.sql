@@ -1,7 +1,7 @@
 {{
     config(
         materialized='incremental' if ga4_export.is_incremental_compatible() else 'table',
-        unique_key='unique_key',
+        unique_key='unique_event_id',
         incremental_strategy='insert_overwrite' if target.type in ('bigquery', 'spark', 'databricks') else 'delete+insert',
         partition_by={
             "field": "event_date", 
@@ -47,7 +47,8 @@ fields as (
 final as (
     
     select
-        cast(_fivetran_id as {{ dbt.type_string() }}) as unique_event_id,
+        cast(_fivetran_id as {{ dbt.type_string() }}) as _fivetran_id,
+        {{ dbt_utils.generate_surrogate_key(['user_pseudo_id', 'event_timestamp', 'event_name']) }} as unique_event_id,
         cast(_fivetran_synced as {{ dbt.type_timestamp() }}) as fivetran_synced,
         cast(bundle_sequence_id as {{ dbt.type_int() }}) as bundle_sequence_id,
         event_date, -- renamed in macro due to reserved word
@@ -83,6 +84,7 @@ final as (
         param_engagement_time_msec,
         param_engaged_session_event,
         param_session_engaged,
+        stream_id,
         is_intraday,
         source_relation
 
@@ -91,7 +93,6 @@ final as (
 )
 
 select
-    *,
-    {{ dbt_utils.generate_surrogate_key(['user_pseudo_id', 'event_timestamp', 'event_name']) }} as unique_key,
+    *
 from final
 where is_intraday = false
