@@ -82,6 +82,15 @@ We sync data for intraday events.
 We sync events from intraday tables throughout the day. Whereas, we sync daily tables at the end of the day.
 To differentiate the intraday events from the end-of-day events, you can filter the is_intraday column in the EVENT table.
 
+#### Sampled Data
+To be completed
+
+add notes about the presence of sampled data and how that may cause different between prebuilt reports and exports 
+
+ https://www.cardinalpath.com/blog/ga4-and-bigquery-why-might-data-not-match 
+This indicator in the UI will confirm the presence of “estimated” (i.e., modeled) data, as well as the date on which this data began to be included in your UI reports.
+
+If you have modeled data in your data, consider changing your GA4 reporting identity to “Observed” or “Device-Based.” This will remove the modeled data from your dataset, and give you results that better match against BigQuery. Keep in mind that you can switch between reporting identities at any time, without making a permanent change to your data. For example, you can disable modeled data, validate against BigQuery, and then return to included modeled data in the GA4 UI.
 
 
 #### Key Events

@@ -40,12 +40,16 @@ sources:
             description: The platform on which the event occurred (e.g., iOS, Android).
           - name: timestamp
             description: The timestamp when the event occurred.
+          - name: collected_traffic_source_manual_medium
+            description: The manual campaign medium (utm_medium) that was collected with the event. Also includes parsed parameters from referral params, not just UTM values.
+          - name: collected_traffic_source_manual_source 
+            description: The manual campaign source (utm_source) that was collected with the event. Also includes parsed parameters from referral params, not just UTM values.
           - name: traffic_source_medium
-            description: The medium through which the user arrived (e.g., organic, paid).
+            description: Name of the medium (paid search, organic search, email, etc.) that first acquired the user. This field is not populated in intraday tables.
           - name: traffic_source_name
-            description: The name of the traffic source.
+            description: Name of the marketing campaign that first acquired the user. This field is not populated in intraday tables.
           - name: traffic_source_source
-            description: The source of the traffic (e.g., google, facebook).
+            description: Name of the network that first acquired the user. This field is not populated in intraday tables.
           - name: user_first_touch_timestamp
             description: The timestamp of the user's first touch.
           - name: user_id

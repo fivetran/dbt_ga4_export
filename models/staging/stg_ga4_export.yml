@@ -29,12 +29,6 @@ models:
             description: The platform on which the event occurred (e.g., iOS, Android).
           - name: event_timestamp
             description: The timestamp when the event occurred.
-          - name: traffic_source_medium
-            description: The medium through which the user arrived (e.g., organic, paid).
-          - name: traffic_source_name
-            description: The name of the traffic source.
-          - name: traffic_source_source
-            description: The source of the traffic (e.g., google, facebook).
           - name: user_first_touch_timestamp
             description: The timestamp of the user's first touch.
           - name: user_id

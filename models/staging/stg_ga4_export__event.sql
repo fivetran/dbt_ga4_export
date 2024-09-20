@@ -24,6 +24,10 @@ with base as (
     -- Initial load or full refresh
     where date >= {{ "'" ~ var('ga4_export_date_start',  '2024-01-01') ~ "'" }}
     {% endif %}
+
+    and coalesce(collected_traffic_source_manual_medium,traffic_source_medium) = 'referral'
+    and coalesce(collected_traffic_source_manual_source,traffic_source_source) = 'linkedin.com'
+
 ),
 
 fields as (
@@ -44,11 +48,11 @@ fields as (
 
 ),
 
-final as (
+final_pre as (
     
     select
         cast(_fivetran_id as {{ dbt.type_string() }}) as _fivetran_id,
-        {{ dbt_utils.generate_surrogate_key(['user_pseudo_id', 'event_timestamp', 'event_name']) }} as unique_event_id,
+        {{ dbt_utils.generate_surrogate_key(['user_pseudo_id', 'event_timestamp', 'event_name', 'bundle_sequence_id']) }} as unique_event_id,
         cast(_fivetran_synced as {{ dbt.type_timestamp() }}) as fivetran_synced,
         cast(bundle_sequence_id as {{ dbt.type_int() }}) as bundle_sequence_id,
         event_date, -- renamed in macro due to reserved word
@@ -59,9 +63,8 @@ final as (
         event_name, -- renamed in macro due to reserved word
         platform,
         cast(event_timestamp as {{ dbt.type_timestamp() }}) as event_timestamp, -- renamed in macro due to reserved word
-        traffic_source_medium,
-        traffic_source_name,
-        traffic_source_source,
+        coalesce(collected_traffic_source_manual_medium,traffic_source_medium) as source_medium,
+        coalesce(collected_traffic_source_manual_source,traffic_source_source) as source_source,
         cast(user_first_touch_timestamp as {{ dbt.type_timestamp() }}) as user_first_touch_timestamp,
         cast(user_id as {{ dbt.type_string() }}) as user_id,
         cast(user_pseudo_id as {{ dbt.type_string() }}) as user_pseudo_id,
@@ -86,13 +89,23 @@ final as (
         param_session_engaged,
         stream_id,
         is_intraday,
+        row_number() over (partition by user_pseudo_id, event_timestamp, event_name, bundle_sequence_id order by param_session_engaged desc) as nth_event_record,
         source_relation
 
     from fields
+
+),
+
+dedupe as (
+
+    select
+        *
+    from final_pre
+    where nth_event_record = 1
 
 )
 
 select
     *
-from final
+from dedupe
 where is_intraday = false
