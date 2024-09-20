@@ -69,6 +69,21 @@ packages:
 #### Connector Restrictions
 This package is built only for connectors using the default *column* sync mode. Additionally, it assumes the underlying schema for the connector version synced after July 24, 2023.
 
+#### Intraday Events
+To be completed
+
+add notes about intraday events being synced
+
+Syncing events from intraday tables
+https://fivetran.com/docs/connectors/applications/google-analytics-4-export#syncingeventsfromintradaytables
+
+We sync data for intraday events.
+
+We sync events from intraday tables throughout the day. Whereas, we sync daily tables at the end of the day.
+To differentiate the intraday events from the end-of-day events, you can filter the is_intraday column in the EVENT table.
+
+
+
 #### Key Events
 According to Google Analytics, a key event is an event that's particularly important to the success of your company.
 

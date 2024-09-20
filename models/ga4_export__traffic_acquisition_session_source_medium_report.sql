@@ -35,7 +35,7 @@ traffic_acquisition_report as (
         traffic_source_source as session_source,
         count(distinct case when event_name = 'user_engagement' then session_id end) as engaged_sessions,
         count(distinct session_id) as total_sessions,
-        round(count(distinct case when event_name = 'user_engagement' then session_id end)/ nullif(count(distinct session_id),0) ,2) as engagement_rate_comparison,
+        round(count(distinct case when event_name = 'user_engagement' then session_id end)/ nullif(count(distinct session_id),0) ,2) as engagement_rate,
         count(unique_event_id) as event_count,
         round((count(unique_event_id)) / nullif(count(distinct session_id),0), 2) as events_per_session,
         count(distinct case when event_name in ({{ "'" ~ var('key_events') | join("', '") ~ "'" }}) then unique_event_id end) as key_events,
