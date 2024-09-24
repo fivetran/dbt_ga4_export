@@ -3,8 +3,8 @@ with user_first_event as (
 -- identify the first event for each user based on the user_first_touch_timestamp
     select
         user_pseudo_id,
-        traffic_source_source as first_user_source,
-        traffic_source_medium as first_user_medium,
+        source_source as first_user_source,
+        source_medium as first_user_medium,
         user_first_touch_timestamp,
         row_number() over (partition by user_pseudo_id order by user_first_touch_timestamp) as rn
 

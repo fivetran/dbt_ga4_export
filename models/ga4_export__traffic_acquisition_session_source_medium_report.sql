@@ -31,8 +31,8 @@ traffic_acquisition_report as (
     select
         event_date,
         source_relation,
-        traffic_source_medium as session_medium,
-        traffic_source_source as session_source,
+        source_medium as session_medium,
+        source_source as session_source,
         count(distinct case when event_name = 'user_engagement' then session_id end) as engaged_sessions,
         count(distinct session_id) as total_sessions,
         round(count(distinct case when event_name = 'user_engagement' then session_id end)/ nullif(count(distinct session_id),0) ,2) as engagement_rate,
