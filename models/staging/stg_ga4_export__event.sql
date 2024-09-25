@@ -1,7 +1,7 @@
 {{
     config(
         materialized='incremental' if ga4_export.is_incremental_compatible() else 'table',
-        unique_key='unique_event_id',
+        unique_key='event_id',
         incremental_strategy='insert_overwrite' if target.type in ('bigquery', 'spark', 'databricks') else 'delete+insert',
         partition_by={
             "field": "event_date", 
@@ -25,8 +25,8 @@ with base as (
     where date >= {{ "'" ~ var('ga4_export_date_start',  '2024-01-01') ~ "'" }}
     {% endif %}
 
-    and coalesce(collected_traffic_source_manual_medium,traffic_source_medium) = 'referral'
-    and coalesce(collected_traffic_source_manual_source,traffic_source_source) = 'linkedin.com'
+    and coalesce(collected_traffic_source_manual_medium,traffic_source_medium) = 'referral' -- temp
+    and coalesce(collected_traffic_source_manual_source,traffic_source_source) = 'linkedin.com' -- temp
 
 ),
 
@@ -52,7 +52,7 @@ final_pre as (
     
     select
         cast(_fivetran_id as {{ dbt.type_string() }}) as _fivetran_id,
-        {{ dbt_utils.generate_surrogate_key(['user_pseudo_id', 'event_timestamp', 'event_name', 'bundle_sequence_id']) }} as unique_event_id,
+        {{ dbt_utils.generate_surrogate_key(['user_pseudo_id', 'event_timestamp', 'event_name', 'bundle_sequence_id']) }} as event_id,
         cast(_fivetran_synced as {{ dbt.type_timestamp() }}) as fivetran_synced,
         cast(bundle_sequence_id as {{ dbt.type_int() }}) as bundle_sequence_id,
         event_date, -- renamed in macro due to reserved word
@@ -89,23 +89,21 @@ final_pre as (
         param_session_engaged,
         stream_id,
         is_intraday,
-        row_number() over (partition by user_pseudo_id, event_timestamp, event_name, bundle_sequence_id order by param_session_engaged desc) as nth_event_record,
         source_relation
 
     from fields
 
 ),
 
-dedupe as (
+exclude_intraday as (
 
     select
         *
     from final_pre
-    where nth_event_record = 1
+    where is_intraday = false
 
 )
 
 select
     *
-from dedupe
-where is_intraday = false
+from exclude_intraday
