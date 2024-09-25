@@ -5,10 +5,12 @@ models:
         description: >
           Each record represents an event triggered by a user in GA4, containing details such as event name, timestamp, user ID, and associated parameters.
         columns:
-          - name: unique_event_id
-            description: The unique identifier for this event record.
+          - name: fivetran_id
+            description: The unique identifier for this record.
             tests:
               - unique
+          - name: event_id
+            description: The key generated from a combination of 'user_pseudo_id', 'event_timestamp', 'event_name', and 'bundle_sequence_id'.
           - name: fivetran_synced
             description: Timestamp indicating when this record was last synced from the source.
           - name: bundle_sequence_id
