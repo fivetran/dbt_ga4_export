@@ -31,7 +31,7 @@ conversions_report as (
         event_date,
         event_name,
         source_relation,
-        count(distinct event_id) as key_events,
+        count(event_id) as key_events,
         sum(ecommerce_purchase_revenue) as total_revenue,
         count(distinct user_pseudo_id) as total_users
 

@@ -30,8 +30,8 @@ events_report as (
         event_date,
         event_name,
         source_relation,
-        count(distinct event_id) as event_count,
-        (count(distinct event_id) / nullif(count(distinct user_id),0)) as event_count_per_user,
+        count(event_id) as event_count,
+        (count(event_id) / nullif(count(distinct user_pseudo_id),0)) as event_count_per_user,
         sum(ecommerce_purchase_revenue) as total_revenue,
         count(distinct user_pseudo_id) as total_users
 

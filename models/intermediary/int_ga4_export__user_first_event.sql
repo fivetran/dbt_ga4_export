@@ -6,7 +6,7 @@ with user_first_event as (
         source_source as first_user_source,
         source_medium as first_user_medium,
         user_first_touch_timestamp,
-        row_number() over (partition by user_pseudo_id order by user_first_touch_timestamp) as rn
+        row_number() over (partition by user_pseudo_id order by user_first_touch_timestamp asc) as rn
 
     from {{ ref('stg_ga4_export__event') }}
     where user_first_touch_timestamp is not null

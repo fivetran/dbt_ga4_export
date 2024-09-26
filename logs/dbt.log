@@ -1,0 +1,23 @@
+[0m14:55:46.573007 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1067f17f0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x106635730>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x106634a40>]}
+
+
+============================== 14:55:46.576142 | 729468b9-4243-45e4-875c-cdf42be3aeca ==============================
+[0m14:55:46.576142 [info ] [MainThread]: Running with dbt=1.7.9
+[0m14:55:46.576467 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/Users/renee/.dbt', 'version_check': 'True', 'fail_fast': 'False', 'log_path': '/Users/renee/Documents/dbt/ga4_export/dbt_ga4_export/logs', 'warn_error': 'None', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'log_format': 'default', 'static_parser': 'True', 'introspect': 'True', 'invocation_command': 'dbt run --full-refresh', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'send_anonymous_usage_stats': 'True'}
+[0m14:55:46.578258 [error] [MainThread]: Encountered an error:
+Runtime Error
+  dbt cannot run because no profile was specified for this dbt project.
+  To specify a profile for this project, add a line like the this to
+  your dbt_project.yml file:
+  
+  profile: [profile name]
+  
+  Here, [profile name] should be replaced with a profile name
+  defined in your profiles.yml file. You can find profiles.yml here:
+  
+  /Users/renee/.dbt/profiles.yml
+  
+[0m14:55:46.579644 [debug] [MainThread]: Resource report: {"command_name": "run", "command_wall_clock_time": 0.04499404, "process_user_time": 0.650834, "process_kernel_time": 0.107337, "process_mem_max_rss": "97075200", "command_success": false, "process_in_blocks": "0", "process_out_blocks": "0"}
+[0m14:55:46.580040 [debug] [MainThread]: Command `dbt run` failed at 14:55:46.579947 after 0.05 seconds
+[0m14:55:46.580279 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10649fb30>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10666b3e0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1062dd3a0>]}
+[0m14:55:46.580494 [debug] [MainThread]: Flushing usage events
