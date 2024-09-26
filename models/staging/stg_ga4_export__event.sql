@@ -25,9 +25,6 @@ with base as (
     where date >= {{ "'" ~ var('ga4_export_date_start',  '2024-01-01') ~ "'" }}
     {% endif %}
 
-    and coalesce(collected_traffic_source_manual_medium,traffic_source_medium) = 'referral' -- temp
-    and coalesce(collected_traffic_source_manual_source,traffic_source_source) = 'linkedin.com' -- temp
-
 ),
 
 fields as (
