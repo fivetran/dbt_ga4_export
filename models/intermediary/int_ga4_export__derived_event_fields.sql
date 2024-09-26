@@ -42,6 +42,12 @@ with event_base as (
             else null
         end as derived_engagement_time_msec,
 
+        -- Create boolean for whether event is user_engagement to use in next CTE for deriving engaged_session
+        case
+            when event_name = 'user_engagement' 
+            then 1 else 0
+        end as is_engaged_event,
+
         -- Generate session index based on 30-minute inactivity
         sum(
             case 
@@ -61,12 +67,13 @@ with event_base as (
         *,
         -- Coalesce param_engagement_time_msec or use the derived_engagement_time_msec as engagement_time in milliseconds
         coalesce(param_engagement_time_msec,derived_engagement_time_msec) as engagement_time_msec,
-        
+        coalesce(param_session_engaged,is_engaged_event) as session_engaged,
         -- Coalesce param_ga_session_id or create session_id from session_index
-        coalesce(param_ga_session_id, concat(user_pseudo_id, '_', platform, '_', session_index)) as session_id
+        concat(user_pseudo_id, '_', coalesce(param_ga_session_id, concat(platform, '_', session_index)) ) as session_id
+
     from sessionized_events se
 
 )
 
-select * 
+select *
 from final_sessionized

@@ -1,4 +1,4 @@
--- user_source_medium_report
+-- user_acquisition_first_user_source_medium_report
 {{
     config(
         materialized='incremental' if ga4_export.is_incremental_compatible() else 'table',
@@ -36,10 +36,10 @@ with derived_event_fields as (
         source_relation,
         user_first_event.first_user_medium as first_user_medium,
         user_first_event.first_user_source as first_user_source,
-        count(distinct case when event_name = 'user_engagement' then session_id end) as engaged_sessions,
-        avg(case when event_name = 'user_engagement' then 1 else 0 end) as engagement_rate,
-        count(distinct event_id) as event_count,
-        count(distinct case when event_name in ({{ "'" ~ var('key_events') | join("', '") ~ "'" }}) then event_id end) as key_events,
+        count(distinct case when session_engaged = 1 then session_id end) as engaged_sessions,
+        round(count(distinct case when session_engaged = 1 then session_id end)/ nullif(count(distinct session_id),0) ,2) as engagement_rate,
+        count(event_id) as event_count,
+        count(case when event_name in ({{ "'" ~ var('key_events') | join("', '") ~ "'" }}) then event_id end) as key_events,
         count(distinct case when user_first_touch_timestamp is not null then user_id end) as new_users,
         count(distinct derived_event_fields.user_pseudo_id) as total_users,
         sum(ecommerce_purchase_revenue) as total_revenue,
