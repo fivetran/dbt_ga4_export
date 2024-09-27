@@ -78,7 +78,7 @@ models:
           - name: source_relation
             description: The source of the record if the unioning functionality is being used. For example, this could be the case if you're syncing multiple properties.
           - name: is_intraday
-            description: Events that originated from the intraday table, a table representing current day events that gets updated throughout the day.
+            description: A flag for events that originated from the intraday table, a table representing current day events that gets updated throughout the day.
           - name: source_medium
             description: The "type" of channel that the traffic comes from (organic search, paid search, referral, etc). This is a coalesce between collected_traffic_source_manual_medium and traffic_source_medium.
           - name: source_source

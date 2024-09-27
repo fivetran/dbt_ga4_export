@@ -13,3 +13,4 @@ models:
 vars:
   ga4_export:
     event_table: "{{ source('ga4_export', 'event') }}"
+    key_events: []

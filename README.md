@@ -23,10 +23,10 @@ These tables are designed to replicate common GA4 reports. The following provide
 
 | **Table**                                                       | **GA4 Report**                                        | **Description**                                                                                                     |
 |------------------------------------------------------------------|-------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-| ga4_export__traffic_acquisition_session_source_medium_report     | traffic_acquisition_session_source_medium_report       | Tracks sessions, events, and revenue by source and medium. Provides insights into traffic sources driving engagement. |
-| ga4_export__user_acquisition_first_user_source_medium_report     | user_acquisition_first_user_source_medium_report       | Tracks how new users are acquired by first user medium and source. Includes engagement metrics and total revenue.     |
+| ga4_export__traffic_acquisition_session_source_medium_report     | traffic_acquisition_session_source_medium_report       | Tracks metrics including sessions, events, users, and revenue by source and medium. |
+| ga4_export__user_acquisition_first_user_source_medium_report     | user_acquisition_first_user_source_medium_report       |  Tracks metrics including sessions, events, users, and revenue by first user medium and source. |
 | ga4_export__events_report                                        | events_report                                         | Summarizes event counts, revenue generated from events, and user engagement metrics across the app or website.        |
-| ga4_export__conversions_report                                   | conversions_report                                    | Tracks conversion events, key user actions, and total revenue, offering insights into conversion behavior.            |
+| ga4_export__conversions_report                                   | conversions_report                                    | Tracks key events, user actions, total revenue, and other metrics for just key events. Offers insights into conversion behavior.            |
 
 <!--section-end-->
 
@@ -67,36 +67,30 @@ packages:
     version: [">=0.1.0", "<0.2.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 #### Connector Restrictions
-This package is built only for connectors using the default *column* sync mode. Additionally, it assumes the underlying schema for the connector version synced after July 24, 2023.
+This package is suited for connectors using the default *column* sync mode, as opposed to the *json* sync mode. Additionally, it assumes the underlying schema for the connector version synced after July 24, 2023.
+
+For more information on the underlying schema, please refer to the [connector docs](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#schemainformation) and [Google Analytic's documentation on the Export schema](https://support.google.com/analytics/answer/7029846?hl=en&ref_topic=9359001#zippy=%2Cevent).
+
+#### Discrepanices Between GA4 Export vs GA4 Reports
+It’s common to see discrepancies when comparing GA4 exported data, which is used in this package, against GA4 reports (such as the ones in the GA4 UI). This can be due to various reasons, including the UI using sampled data, approximated cardinality for metrics, or the grain at which metrics are aggregated.
+
+For example, your GA4 `user_acquisition_first_user_source_medium` prebuilt report may show a daily event count of 6836 for a certain source and medium while the `ga4_export__user_acquisition_first_user_source_medium_report` model will show 6765.
+
+For more information on why this may occur, please refer to the below articles (Including the official Google Analytic articles as well as 3rd party blogs): 
+
+- https://developers.google.com/analytics/blog/2023/bigquery-vs-ui
+- https://www.cardinalpath.com/blog/ga4-and-bigquery-why-might-data-not-match 
 
 #### Intraday Events
-To be completed
-
-add notes about intraday events being synced
-
-Syncing events from intraday tables
-https://fivetran.com/docs/connectors/applications/google-analytics-4-export#syncingeventsfromintradaytables
-
-We sync data for intraday events.
-
-We sync events from intraday tables throughout the day. Whereas, we sync daily tables at the end of the day.
-To differentiate the intraday events from the end-of-day events, you can filter the is_intraday column in the EVENT table.
-
-#### Sampled Data
-To be completed
-
-add notes about the presence of sampled data and how that may cause different between prebuilt reports and exports 
-
- https://www.cardinalpath.com/blog/ga4-and-bigquery-why-might-data-not-match 
-This indicator in the UI will confirm the presence of “estimated” (i.e., modeled) data, as well as the date on which this data began to be included in your UI reports.
-
-If you have modeled data in your data, consider changing your GA4 reporting identity to “Observed” or “Device-Based.” This will remove the modeled data from your dataset, and give you results that better match against BigQuery. Keep in mind that you can switch between reporting identities at any time, without making a permanent change to your data. For example, you can disable modeled data, validate against BigQuery, and then return to included modeled data in the GA4 UI.
-
+The GA4 Export Connector [syncs data from intraday tables](
+https://fivetran.com/docs/connectors/applications/google-analytics-4-export#syncingeventsfromintradaytables) throughout the day, and syncs daily tables at the end of the day. Events from the intraday tables are flagged by an `is_intraday` field in the `event` table. To avoid duplication and since the models in this package are built upon daily tables, we filter out the intraday events in the staging `stg_ga4_export` model.
 
 #### Key Events
 According to Google Analytics, a key event is an event that's particularly important to the success of your company.
 
-Because a key event may differ across companies, we require you specify your list of these events. This will be applied in the `ga4_export__conversions_report` model which filters the `events_report` to just key events. Additionally this will manifest in the `key_events` field in `ga4_export__traffic_acquisition_session_source_medium_report` and `ga4_export__user_acquisition_first_user_source_medium_report`.
+Because a key event may differ across companies, we require you specify your list of these events. Otherwise, the package will assume no key events. 
+
+This will be applied in the `ga4_export__conversions_report` model which filters the `events_report` to just key events. Additionally this will manifest in the `key_events` field in `ga4_export__traffic_acquisition_session_source_medium_report` and `ga4_export__user_acquisition_first_user_source_medium_report`.
 
 To configure your key events, add the following variable to your `dbt_project.yml` file.
 

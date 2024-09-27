@@ -1,5 +1,11 @@
 {{
     config(
+        enabled=var('key_events', none) is not none and var('key_events') != []
+    )
+}}
+
+{{
+    config(
         materialized='incremental' if ga4_export.is_incremental_compatible() else 'table',
         unique_key='unique_key',
         incremental_strategy='insert_overwrite' if target.type in ('bigquery', 'spark', 'databricks') else 'delete+insert',
@@ -12,6 +18,8 @@
         file_format='delta'
     )
 }}
+
+-- stipulate the names of your key events in your dbt_project.yml.
 
 with events_base as (
 
