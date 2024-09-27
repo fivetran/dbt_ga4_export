@@ -9,8 +9,18 @@ models:
     # +schema: "ga4_export_{{ var('directed_schema','dev') }}" ## To be used for validation testing
 
 vars:
-  ga4_export_schema: ga4_export_integration_tests_1
+  ga4_export:
+    ga4_export_schema: ga4_export_integration_tests_1
+    ga4_export_identifier: "event_data"
 
 dispatch:
   - macro_namespace: dbt_utils
     search_order: ['spark_utils', 'dbt_utils']
+
+
+seeds:
+  +quote_columns: "{{ true if target.type in ('redshift','postgres') else false }}"
+  ga4_export_integration_tests:
+    +column_types:
+      bundle_sequence_id: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+      param_engagement_time_msec: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
