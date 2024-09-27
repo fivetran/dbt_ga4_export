@@ -41,7 +41,7 @@ traffic_acquisition_report as (
         count(case when event_name in ({{ "'" ~ var('key_events') | join("', '") ~ "'" }}) then event_id end) as key_events,
         sum(ecommerce_purchase_revenue) as total_revenue,
         count(distinct user_pseudo_id) as total_users,
-        round(sum(case when event_name = 'user_engagement' then engagement_time_msec / 1000 end)/ nullif(count(session_id),0), 2) as user_engagement_duration
+        round(sum(case when event_name = 'user_engagement' then engagement_time_msec end)/ nullif(count(session_id),0), 2) as user_engagement_duration
 
     from derived_event_fields
     group by 1, 2, 3, 4

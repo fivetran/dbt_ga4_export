@@ -43,7 +43,7 @@ with derived_event_fields as (
         count(distinct case when user_first_touch_timestamp is not null then user_id end) as new_users,
         count(distinct derived_event_fields.user_pseudo_id) as total_users,
         sum(ecommerce_purchase_revenue) as total_revenue,
-        round(sum(case when event_name = 'user_engagement' then engagement_time_msec / 1000 end)/ nullif(count(distinct user_id),0), 2) as user_engagement_duration
+        round(sum(case when event_name = 'user_engagement' then engagement_time_msec end)/ nullif(count(distinct user_id),0), 2) as user_engagement_duration
 
     from derived_event_fields
     left join user_first_event
