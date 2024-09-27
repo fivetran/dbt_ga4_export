@@ -26,7 +26,7 @@ sessions_aggregate as (
         max(event_timestamp) as session_end_time,
         sum(engagement_time_msec) / 1000 as total_session_engagement_time_sec,
         count(event_id) as total_events,
-        max(is_session_engaged) as engaged_session
+        max(is_session_engaged) as is_engaged_session
     from derived_event_fields
     group by session_id
 )
