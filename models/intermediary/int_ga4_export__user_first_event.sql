@@ -1,21 +1,43 @@
-with user_first_event as (
-
--- identify the first event for each user based on the user_first_touch_timestamp
+with user_first_data as (
+    -- identify the first event for each user based on the minimum event_timestamp
     select
         user_pseudo_id,
-        source_source as first_user_source,
-        source_medium as first_user_medium,
-        user_first_touch_timestamp,
-        row_number() over (partition by user_pseudo_id order by user_first_touch_timestamp asc) as rn
+        min(event_timestamp) as first_event_timestamp
+    from
+        {{ ref('stg_ga4_export__event') }}
+    where
+        event_name = 'session_start'
+    group by
+        user_pseudo_id
+),
 
-    from {{ ref('stg_ga4_export__event') }}
-    where user_first_touch_timestamp is not null
+first_user_source_medium as (
+    -- use row_number() to prioritize non-null source/medium, ensuring one record per user
+    select
+        events.user_pseudo_id,
+        lower(events.source_source) as first_user_source,
+        lower(events.source_medium) as first_user_medium,
+        row_number() over (
+            partition by events.user_pseudo_id
+            order by 
+                -- just in case, prioritize rows with non-null source_source and source_medium, since there can be multiple events with the same event_timestamp
+                case 
+                when events.source_source is not null and events.source_medium is not null then 1
+                else 2
+                end,
+                events.event_timestamp
+        ) as row_num
+    from
+        {{ ref('stg_ga4_export__event') }} as events
+    join
+        user_first_data as ufd
+        on events.user_pseudo_id = ufd.user_pseudo_id
+        and events.event_timestamp = ufd.first_event_timestamp
 )
 
--- select the first row for each user
 select
     user_pseudo_id,
     first_user_source,
     first_user_medium
-from user_first_event
-where rn = 1
+from first_user_source_medium
+where row_num = 1 -- select only the first record per user

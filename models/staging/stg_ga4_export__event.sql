@@ -49,7 +49,7 @@ final_pre as (
     
     select
         cast(_fivetran_id as {{ dbt.type_string() }}) as fivetran_id,
-        {{ dbt_utils.generate_surrogate_key(['user_pseudo_id', 'event_timestamp', 'event_name', 'bundle_sequence_id']) }} as event_id,
+        concat(user_pseudo_id, '_', event_timestamp, '_', event_name, '_', bundle_sequence_id) as event_id,
         cast(_fivetran_synced as {{ dbt.type_timestamp() }}) as fivetran_synced,
         cast(bundle_sequence_id as {{ dbt.type_int() }}) as bundle_sequence_id,
         event_date, -- renamed in macro due to reserved word

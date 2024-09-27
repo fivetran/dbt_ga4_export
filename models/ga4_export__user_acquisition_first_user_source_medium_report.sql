@@ -34,8 +34,8 @@ with derived_event_fields as (
     select
         event_date,
         source_relation,
-        user_first_event.first_user_medium as first_user_medium,
-        user_first_event.first_user_source as first_user_source,
+        user_first_event.first_user_medium,
+        user_first_event.first_user_source,
         count(distinct case when is_session_engaged = 1 then session_id end) as engaged_sessions,
         round(count(distinct case when is_session_engaged = 1 then session_id end)/ nullif(count(distinct session_id),0) ,2) as engagement_rate,
         count(event_id) as event_count,

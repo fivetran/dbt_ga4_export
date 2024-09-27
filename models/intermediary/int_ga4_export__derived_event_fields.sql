@@ -69,7 +69,7 @@ with event_base as (
         coalesce(param_engagement_time_msec,derived_engagement_time_msec) as engagement_time_msec,
         coalesce(param_session_engaged,is_engaged_event) as is_session_engaged,
         -- Coalesce param_ga_session_id or create session_id from session_index
-        concat(user_pseudo_id, '_', coalesce(param_ga_session_id, concat(platform, '_', session_index)) ) as session_id
+        concat(user_pseudo_id, '_', coalesce(param_ga_session_id, concat(platform, '_', session_index)) ) as session_id -- user_pseudo_id and session_id
 
     from sessionized_events se
 
