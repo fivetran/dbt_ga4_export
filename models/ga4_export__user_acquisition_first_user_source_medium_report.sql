@@ -40,7 +40,7 @@ with derived_event_fields as (
         round(count(distinct case when is_session_engaged = 1 then session_id end)/ nullif(count(distinct session_id),0) ,2) as engagement_rate,
         count(event_id) as event_count,
         count(case when event_name in ({{ "'" ~ var('key_events') | join("', '") ~ "'" }}) then event_id end) as key_events,
-        count(distinct case when user_first_touch_timestamp is not null then user_id end) as new_users,
+        count(distinct case when event_name = 'first_visit' then derived_event_fields.user_pseudo_id end) as new_users,
         count(distinct derived_event_fields.user_pseudo_id) as total_users,
         coalesce(sum(ecommerce_purchase_revenue),0) as total_revenue,
         round(sum(case when is_session_engaged = 1 then engagement_time_msec else 0 end)/ nullif(count(distinct session_id),0), 2) as user_engagement_duration
