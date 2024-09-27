@@ -1,0 +1,17 @@
+database_key: ga4_export_database
+schema_key: ga4_export_schema
+
+dbt_versions: ">=1.3.0 <2.0.0"
+
+destination_configurations:
+  databricks:
+    dispatch:
+      - macro_namespace: dbt_utils
+        search_order: [ 'spark_utils', 'dbt_utils' ]
+
+public_models: [
+  "ga4_export__conversions_report",
+  "ga4_export__events_report",
+  "ga4_export__traffic_acquisition_session_source_medium_report",
+  "ga4_export__user_acquisition_first_user_source_medium_report"
+]
