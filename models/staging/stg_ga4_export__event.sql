@@ -60,8 +60,8 @@ final_pre as (
         event_name, -- renamed in macro due to reserved word
         platform,
         cast(event_timestamp as {{ dbt.type_timestamp() }}) as event_timestamp, -- renamed in macro due to reserved word
-        coalesce(collected_traffic_source_manual_medium,traffic_source_medium) as source_medium,
-        coalesce(collected_traffic_source_manual_source,traffic_source_source) as source_source,
+        coalesce(collected_traffic_source_manual_medium,traffic_source_medium, param_medium) as source_medium,
+        coalesce(collected_traffic_source_manual_source,traffic_source_source, param_source) as source_source,
         cast(user_first_touch_timestamp as {{ dbt.type_timestamp() }}) as user_first_touch_timestamp,
         cast(user_id as {{ dbt.type_string() }}) as user_id,
         cast(user_pseudo_id as {{ dbt.type_string() }}) as user_pseudo_id,
@@ -73,13 +73,13 @@ final_pre as (
         cast(ecommerce_total_item_quantity as {{ dbt.type_int() }}) as ecommerce_total_item_quantity,
         cast(ecommerce_transaction_id as {{ dbt.type_string() }}) as ecommerce_transaction_id,
         event_dimensions_hostname,
-        cast(param_video_duration as {{ dbt.type_int() }}) as video_duration,
-        cast(param_percent_scrolled as {{ dbt.type_float() }}) as percent_scrolled,
-        param_campaign as campaign,
-        cast(param_gclid as {{ dbt.type_string() }}) as gclid,
-        param_medium as medium, -- need to check if param_ fields are custom and therefore we can't use them
-        param_source as source,
-        cast(param_ga_session_id as {{ dbt.type_string() }}) as param_ga_session_id, -- maybe we don't use this and instead bring in ga_session_id from event_param
+        cast(param_video_duration as {{ dbt.type_int() }}) as param_video_duration,
+        cast(param_percent_scrolled as {{ dbt.type_float() }}) as param_percent_scrolled,
+        param_campaign as param_campaign,
+        cast(param_gclid as {{ dbt.type_string() }}) as param_gclid,
+        param_medium,
+        param_source,
+        cast(param_ga_session_id as {{ dbt.type_string() }}) as param_ga_session_id,
         param_ga_session_number,
         param_engagement_time_msec,
         param_engaged_session_event,

@@ -53,17 +53,17 @@ models:
             description: The identifier for the ecommerce transaction.
           - name: event_dimensions_hostname
             description: The hostname associated with the event.
-          - name: video_duration
+          - name: param_video_duration
             description: The duration of the video in milliseconds.
-          - name: percent_scrolled
+          - name: param_percent_scrolled
             description: The percentage of the page scrolled.
-          - name: campaign
+          - name: param_campaign
             description: The campaign associated with the event.
-          - name: gclid
+          - name: param_gclid
             description: The Google Click ID associated with the event.
-          - name: medium
+          - name: param_medium
             description: The medium associated with the event.
-          - name: source
+          - name: param_source
             description: The source associated with the event.
           - name: param_ga_session_id
             description: The GA session ID associated with the event.
@@ -80,8 +80,8 @@ models:
           - name: is_intraday
             description: A flag for events that originated from the intraday table, a table representing current day events that gets updated throughout the day.
           - name: source_medium
-            description: The "type" of channel that the traffic comes from (organic search, paid search, referral, etc). This is a coalesce between collected_traffic_source_manual_medium and traffic_source_medium.
+            description: The "type" of channel that the traffic comes from (organic search, paid search, referral, etc). This is a coalesce between collected_traffic_source_manual_medium and traffic_source_medium and param_medium.
           - name: source_source
-            description: Location where your website’s traffic comes from (Google, Facebook, Quora, etc). This is a coalesce between collected_traffic_source_manual_source and traffic_source_source.
+            description: Location where your website’s traffic comes from (Google, Facebook, Quora, etc). This is a coalesce between collected_traffic_source_manual_source and traffic_source_source and param_source.
           - name: stream_id
             description: Unique identifier for the data stream from which user activity originates. This can be from iOS, Android, and Web.
