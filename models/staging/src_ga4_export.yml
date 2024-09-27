@@ -95,4 +95,6 @@ sources:
           - name: param_session_engaged
             description: Whether the user was engaged during the session.
           - name: is_intraday
-            description: to be completed
+            description: Events that originated from the intraday table, a table representing current day events that gets updated throughout the day.
+          - name: stream_id
+            description: Unique identifier for the data stream from which user activity originates. This can be from iOS, Android, and Web.

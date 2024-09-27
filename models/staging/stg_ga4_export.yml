@@ -76,6 +76,12 @@ models:
           - name: param_session_engaged
             description: Whether the user was engaged during the session.
           - name: source_relation
-            description: The source of the record if the unioning functionality is being used. For example, this could be the case if you're syncing multiple properties. 
+            description: The source of the record if the unioning functionality is being used. For example, this could be the case if you're syncing multiple properties.
           - name: is_intraday
-            description: to be completed
+            description: Events that originated from the intraday table, a table representing current day events that gets updated throughout the day.
+          - name: source_medium
+            description: The "type" of channel that the traffic comes from (organic search, paid search, referral, etc). This is a coalesce between collected_traffic_source_manual_medium and traffic_source_medium.
+          - name: source_source
+            description: Location where your website’s traffic comes from (Google, Facebook, Quora, etc). This is a coalesce between collected_traffic_source_manual_source and traffic_source_source.
+          - name: stream_id
+            description: Unique identifier for the data stream from which user activity originates. This can be from iOS, Android, and Web.

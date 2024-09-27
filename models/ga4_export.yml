@@ -36,7 +36,7 @@ models:
         description: Count of events defined as key events in the key_events variable.
 
       - name: new_users
-        description: The number of users with a non-null user_first_touch_timestamp.
+        description: The number of users with a first_visit event. first_visit is an automatically collected event in GA4 for understanding and tracking the initial interactions between users and your website. It focuses on counting the number of new users who visit your website for the first time within a specified timeframe. (https://ga4.com/first-visit-event-ga4)
 
       - name: total_revenue
         description: The sum of ecommerce_purchase_revenue.
