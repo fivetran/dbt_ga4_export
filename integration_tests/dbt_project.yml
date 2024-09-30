@@ -23,3 +23,4 @@ seeds:
   ga4_export_integration_tests:
     +column_types:
       param_engagement_time_msec: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
+      stream_id: "{{ 'varchar(100)' if target.name in ('redshift', 'postgres') else 'string' }}"
