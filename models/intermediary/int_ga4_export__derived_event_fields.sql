@@ -43,10 +43,10 @@ with event_base as (
         end as derived_engagement_time_msec,
 
         -- Create boolean for whether event is user_engagement to use in next CTE for deriving engaged_session
-        case
+        cast(case
             when event_name = 'user_engagement' 
             then 1 else 0
-        end as is_engaged_event,
+        end as boolean) as is_engaged_event,
 
         -- Generate session index based on 30-minute inactivity
         sum(

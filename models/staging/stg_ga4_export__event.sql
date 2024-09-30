@@ -5,7 +5,7 @@
         incremental_strategy='insert_overwrite' if target.type in ('bigquery', 'spark', 'databricks') else 'delete+insert',
         partition_by={
             "field": "event_date", 
-            "data_type": "date"
+            "data_type": 'date'
             } if target.type not in ('spark','databricks') 
             else ['event_date'],
         cluster_by=['event_name', 'event_date', 'bundle_sequence_id'],
@@ -19,10 +19,10 @@ with base as (
     from {{ ref('stg_ga4_export__event_base') }}
 
     {% if is_incremental() %}
-    where date >= {{ ga4_export.ga4_export_lookback(from_date="max(event_date)", interval=7, datepart='day') }}
+    where 'date' >= {{ ga4_export.ga4_export_lookback(from_date="max(event_date)", interval=7, datepart='day') }}
     {% else %}
     -- Initial load or full refresh
-    where date >= {{ "'" ~ var('ga4_export_date_start',  '2024-01-01') ~ "'" }}
+    where 'date' >= {{ "'" ~ var('ga4_export_date_start',  '2024-01-01') ~ "'" }}
     {% endif %}
 
 ),
