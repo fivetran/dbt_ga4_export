@@ -22,5 +22,4 @@ seeds:
   +quote_columns: "{{ true if target.type in ('redshift','postgres') else false }}"
   ga4_export_integration_tests:
     +column_types:
-      bundle_sequence_id: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
       param_engagement_time_msec: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"

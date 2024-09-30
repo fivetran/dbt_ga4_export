@@ -51,7 +51,7 @@ final_pre as (
         cast(_fivetran_id as {{ dbt.type_string() }}) as fivetran_id,
         concat(user_pseudo_id, '_', event_timestamp, '_', event_name, '_', bundle_sequence_id) as event_id,
         cast(_fivetran_synced as {{ dbt.type_timestamp() }}) as fivetran_synced,
-        cast(bundle_sequence_id as {{ dbt.type_float() }}) as bundle_sequence_id,
+        cast(bundle_sequence_id as {{ dbt.type_string() }}) as bundle_sequence_id,
         event_date, -- renamed in macro due to reserved word
         device_category,
         geo_city,

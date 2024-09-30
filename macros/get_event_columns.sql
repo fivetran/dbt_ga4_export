@@ -3,7 +3,7 @@
 {% set columns = [
     {"name": "_fivetran_id", "datatype": dbt.type_string()},
     {"name": "_fivetran_synced", "datatype": dbt.type_timestamp()},
-    {"name": "bundle_sequence_id", "datatype": dbt.type_int()},
+    {"name": "bundle_sequence_id", "datatype": dbt.type_string()},
     {"name": "date", "datatype": dbt.type_string(), "alias": "event_date"},
     {"name": "device_category", "datatype": dbt.type_string()},
     {"name": "geo_city", "datatype": dbt.type_string()},
