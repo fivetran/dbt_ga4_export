@@ -1,7 +1,7 @@
 {{
     config(
         materialized='incremental' if ga4_export.is_incremental_compatible() else 'table',
-        unique_key='unique_key',
+        unique_key='event_id',
         incremental_strategy='insert_overwrite' if target.type in ('bigquery', 'spark', 'databricks') else 'delete+insert',
         partition_by={
             "field": "event_date", 
