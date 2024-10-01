@@ -83,7 +83,7 @@ final_pre as (
         param_ga_session_number,
         cast(param_engagement_time_msec as {{ dbt.type_float() }}) as param_engagement_time_msec,
         param_engaged_session_event,
-        param_session_engaged,
+        cast(param_session_engaged as boolean) as param_session_engaged,
         cast(stream_id as {{ dbt.type_string() }}) as stream_id,
         is_intraday,
         source_relation
