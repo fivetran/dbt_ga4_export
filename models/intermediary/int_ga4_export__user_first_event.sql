@@ -7,6 +7,7 @@ with user_first_data as (
         {{ ref('stg_ga4_export__event') }}
     where
         event_name = 'session_start'
+        and user_pseudo_id is not null
     group by
         user_pseudo_id
 ),

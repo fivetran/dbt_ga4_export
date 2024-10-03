@@ -32,7 +32,7 @@ final_pre as (
         {{ dbt_utils.generate_surrogate_key(['user_pseudo_id', 'event_timestamp', 'event_name', 'bundle_sequence_id']) }} as event_id,
         cast(_fivetran_synced as {{ dbt.type_timestamp() }}) as fivetran_synced,
         cast(bundle_sequence_id as {{ dbt.type_string() }}) as bundle_sequence_id,
-        event_date, -- renamed in macro due to reserved word
+        cast(event_date as date) as event_date, -- renamed in macro due to reserved word
         device_category,
         geo_city,
         geo_country,
