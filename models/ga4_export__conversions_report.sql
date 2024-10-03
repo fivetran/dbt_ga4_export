@@ -29,6 +29,10 @@ with events_base as (
 
     {% if is_incremental() %}
     and event_date >= {{ ga4_export.ga4_export_lookback(from_date="max(event_date)", interval=7, datepart='day') }}
+
+    {% else %}
+    -- Initial load or full refresh
+    where event_date >= {{ "'" ~ var('ga4_export_date_start',  '2024-01-01') ~ "'" }}
     {% endif %}
 
 ),
