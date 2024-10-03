@@ -34,6 +34,7 @@ first_user_source_medium as (
         user_first_data as ufd
         on events.user_pseudo_id = ufd.user_pseudo_id
         and events.event_timestamp = ufd.first_event_timestamp
+    where events.user_pseudo_id is not null
 )
 
 select

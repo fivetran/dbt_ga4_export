@@ -32,7 +32,7 @@ with events_base as (
 
     {% else %}
     -- Initial load or full refresh
-    where event_date >= {{ "'" ~ var('ga4_export_date_start',  '2024-01-01') ~ "'" }}
+    and event_date >= {{ "'" ~ var('ga4_export_date_start',  '2024-01-01') ~ "'" }}
     {% endif %}
 
 ),
