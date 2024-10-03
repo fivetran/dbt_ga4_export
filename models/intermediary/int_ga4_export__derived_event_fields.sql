@@ -72,9 +72,9 @@ with event_base as (
         -- Coalesce param_engagement_time_msec or use the derived_engagement_time_msec as engagement_time in milliseconds
         coalesce(param_engagement_time_msec,derived_engagement_time_msec) as engagement_time_msec,
         -- Coalesce param_session_engaged or use the derived_is_engaged_event as is_session_engaged
-        coalesce(param_session_engaged,derived_is_engaged_event) as is_session_engaged,
+        cast(coalesce(param_session_engaged,derived_is_engaged_event) as boolean) as is_session_engaged,
         -- Coalesce param_ga_session_number or use the derived_session_index as the session_number
-        coalesce(param_ga_session_number, derived_session_index) as session_number
+        cast(coalesce(param_ga_session_number, derived_session_index) as {{ dbt.type_string() }}) as session_number
 
     from derived_events
 
@@ -83,5 +83,5 @@ with event_base as (
 select
     *,
     -- Concat the user_id with either the param_ga_session_id or derived session_number to generate session_id
-    {{ dbt.concat(["user_pseudo_id","'_'","coalesce('" ~ param_ga_session_id, session_number ~ "')"]) }} as session_id
+    {{ dbt.concat(["user_pseudo_id", "'_'", "coalesce(param_ga_session_id, session_number)"]) }} as session_id
 from final_sessionized
