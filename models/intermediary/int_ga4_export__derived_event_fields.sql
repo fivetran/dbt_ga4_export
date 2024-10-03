@@ -33,7 +33,7 @@ with event_base as (
 
     from event_base
 
-), sessionized_events as (
+), derived_events as (
 
     select
         *,
@@ -41,7 +41,7 @@ with event_base as (
         case 
             when event_name = 'user_engagement' 
                 and lag(event_timestamp) over (partition by user_pseudo_id order by event_timestamp) is not null 
-            then 
+            then
                 {{ dbt.datediff('previous_event_timestamp', 'event_timestamp', 'second') }} * 1000 -- Convert to milliseconds
             else null
         end as derived_engagement_time_msec,
@@ -50,7 +50,7 @@ with event_base as (
         cast(case
             when event_name = 'user_engagement' 
             then 1 else 0
-        end as boolean) as is_engaged_event,
+        end as boolean) as derived_is_engaged_event,
 
         -- Generate session index based on 30-minute inactivity
         sum(
@@ -61,7 +61,7 @@ with event_base as (
                 then 1 
                 else 0 
             end
-        ) over (partition by user_pseudo_id, platform order by event_timestamp) as session_index
+        ) over (partition by user_pseudo_id, platform order by event_timestamp rows between unbounded preceding and current row) as derived_session_index
 
     from lagged_events
 
@@ -71,13 +71,17 @@ with event_base as (
         *,
         -- Coalesce param_engagement_time_msec or use the derived_engagement_time_msec as engagement_time in milliseconds
         coalesce(param_engagement_time_msec,derived_engagement_time_msec) as engagement_time_msec,
-        coalesce(param_session_engaged,is_engaged_event) as is_session_engaged,
-        -- Coalesce param_ga_session_id or create session_id from session_index
-        concat(user_pseudo_id, '_', coalesce(param_ga_session_id, concat(platform, '_', session_index)) ) as session_id -- user_pseudo_id and session_id
+        -- Coalesce param_session_engaged or use the derived_is_engaged_event as is_session_engaged
+        coalesce(param_session_engaged,derived_is_engaged_event) as is_session_engaged,
+        -- Coalesce param_ga_session_number or use the derived_session_index as the session_number
+        coalesce(param_ga_session_number, derived_session_index) as session_number
 
-    from sessionized_events se
+    from derived_events
 
 )
 
-select *
+select
+    *,
+    -- Concat the user_id with either the param_ga_session_id or derived session_number to generate session_id
+    {{ dbt.concat(["user_pseudo_id","'_'","coalesce('" ~ param_ga_session_id, session_number ~ "')"]) }} as session_id
 from final_sessionized
