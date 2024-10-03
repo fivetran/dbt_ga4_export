@@ -11,7 +11,8 @@ models:
 vars:
   ga4_export:
     ga4_export_schema: ga4_export_integration_tests_1
-    ga4_export_identifier: "event_data"
+    ga4_export_event_identifier: "event_data"
+    key_events: ['purchase']
 
 dispatch:
   - macro_namespace: dbt_utils
