@@ -11,7 +11,7 @@ with prod as (
         session_medium,
         session_source,
         count(*) as prod_rows
-    from {{ target.schema }}_ga4_prod.ga4_export__traffic_acquisition_session_source_medium_report
+    from {{ target.schema }}_ga4_export_prod.ga4_export__traffic_acquisition_session_source_medium_report
     group by 1,2,3,4
 ),
 
@@ -22,7 +22,8 @@ dev as (
         session_medium,
         session_source,
         count(*) as dev_rows
-    from {{ target.schema }}_ga4_dev.ga4_export__traffic_acquisition_session_source_medium_report
+    from {{ target.schema }}_ga4_export_dev.ga4_export__traffic_acquisition_session_source_medium_report
+    group by 1,2,3,4
 )
 
 -- test will return values and fail if the row counts don't match
