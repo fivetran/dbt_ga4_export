@@ -1,15 +1,10 @@
--- traffic_acquisition_session_source_medium_report
 {{
     config(
         materialized='incremental' if ga4_export.is_incremental_compatible() else 'table',
         unique_key='unique_key',
         incremental_strategy='insert_overwrite' if target.type in ('bigquery', 'spark', 'databricks') else 'delete+insert',
-        partition_by={
-            "field": "event_date", 
-            "data_type": "date"
-            } if target.type not in ('spark','databricks') 
-            else ['event_date'],
-        cluster_by=['event_date', 'session_medium', 'session_source'],
+        partition_by={"field": "event_date", "data_type": "date"} if target.type not in ('spark','databricks') else ['event_date'],
+        cluster_by=['session_medium', 'session_source'],
         file_format='delta'
     )
 }}
@@ -42,7 +37,7 @@ traffic_acquisition_report as (
         round(cast(count(distinct case when is_session_engaged then session_id end)/ nullif(count(distinct session_id),0) as {{ dbt.type_numeric() }} ) ,2) as engagement_rate,
         count(event_id) as event_count,
         round(cast((count(event_id)) / nullif(count(distinct session_id),0) as {{ dbt.type_numeric() }} ), 2) as events_per_session,
-        count(case when event_name in ({{ "'" ~ var('key_events') | join("', '") ~ "'" }}) then event_id end) as key_events, -- stipulate the names of your key events in your dbt_project.yml.
+        count(case when event_name in ({{ "'" ~ var('key_events',[]) | join("', '") ~ "'" }}) then event_id end) as key_events, -- stipulate the names of your key events in your dbt_project.yml.
         coalesce(sum(ecommerce_purchase_revenue),0) as total_revenue,
         count(distinct user_pseudo_id) as total_users,
         round(cast(sum(case when is_session_engaged then engagement_time_msec else 0 end)/ nullif(count(distinct session_id),0) as {{ dbt.type_numeric() }} ), 2) as user_engagement_duration

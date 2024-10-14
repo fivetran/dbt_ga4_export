@@ -1,15 +1,10 @@
--- user_acquisition_first_user_source_medium_report
 {{
     config(
         materialized='incremental' if ga4_export.is_incremental_compatible() else 'table',
         unique_key='unique_key',
         incremental_strategy='insert_overwrite' if target.type in ('bigquery', 'spark', 'databricks') else 'delete+insert',
-        partition_by={
-            "field": "event_date", 
-            "data_type": "date"
-            } if target.type not in ('spark','databricks') 
-            else ['event_date'],
-        cluster_by=['event_date', 'first_user_medium', 'first_user_source'],
+        partition_by={"field": "event_date", "data_type": "date"} if target.type not in ('spark','databricks') else ['event_date'],
+        cluster_by=['first_user_medium', 'first_user_source'],
         file_format='delta'
     )
 }}
@@ -18,7 +13,7 @@ with derived_event_fields as (
 
     select *
     from {{ ref('int_ga4_export__derived_event_fields') }}
-        -- made incremental upstream
+    -- made incremental upstream
 
     {% if is_incremental() %}
     where event_date >= {{ ga4_export.ga4_export_lookback(from_date="max(event_date)", interval=7, datepart='day') }}
@@ -36,14 +31,14 @@ with derived_event_fields as (
 ), user_acquisition_report as (
     
     select
-        event_date,
-        source_relation,
+        derived_event_fields.event_date,
+        derived_event_fields.source_relation,
         user_first_event.first_user_medium,
         user_first_event.first_user_source,
         count(distinct case when is_session_engaged then session_id end) as engaged_sessions,
         round(cast(count(distinct case when is_session_engaged then session_id end)/ nullif(count(distinct session_id),0) as {{ dbt.type_numeric() }} ),2) as engagement_rate,
         count(event_id) as event_count,
-        count(case when event_name in ({{ "'" ~ var('key_events') | join("', '") ~ "'" }}) then event_id end) as key_events, -- stipulate the names of your key events in your dbt_project.yml.
+        count(case when event_name in ({{ "'" ~ var('key_events',[]) | join("', '") ~ "'" }}) then event_id end) as key_events, -- stipulate the names of your key events in your dbt_project.yml.
         count(distinct case when event_name = 'first_visit' then derived_event_fields.user_pseudo_id end) as new_users,
         count(distinct derived_event_fields.user_pseudo_id) as total_users,
         coalesce(sum(ecommerce_purchase_revenue),0) as total_revenue,
@@ -53,6 +48,7 @@ with derived_event_fields as (
     from derived_event_fields
     left join user_first_event
         on derived_event_fields.user_pseudo_id = user_first_event.user_pseudo_id
+        and derived_event_fields.source_relation = user_first_event.source_relation
 
     group by 1, 2, 3, 4
 

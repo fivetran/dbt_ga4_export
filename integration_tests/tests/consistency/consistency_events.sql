@@ -6,12 +6,12 @@
 -- this test is to make sure the rows counts are the same between versions
 with prod as (
     select count(*) as prod_rows
-    from {{ target.schema }}_ga4_prod.ga4_export__events_report
+    from {{ target.schema }}_ga4_export_prod.ga4_export__events_report
 ),
 
 dev as (
     select count(*) as dev_rows
-    from {{ target.schema }}_ga4_dev.ga4_export__events_report
+    from {{ target.schema }}_ga4_export_dev.ga4_export__events_report
 )
 
 -- test will return values and fail if the row counts don't match

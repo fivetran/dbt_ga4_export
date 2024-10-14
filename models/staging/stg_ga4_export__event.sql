@@ -25,7 +25,7 @@ fields as (
 
 ),
 
-final_pre as (
+final as (
     
     select
         cast(_fivetran_id as {{ dbt.type_string() }}) as fivetran_id,
@@ -70,17 +70,9 @@ final_pre as (
 
     from fields
 
-),
-
-exclude_intraday as (
-
-    select
-        *
-    from final_pre
-    where is_intraday = false
-
 )
 
 select
     *
-from exclude_intraday
+from final
+where not is_intraday

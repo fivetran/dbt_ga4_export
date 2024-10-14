@@ -5,3 +5,5 @@ logs/
 .DS_Store
 package-lock.yml
 run_results.json
+env/
+dbt_packages
