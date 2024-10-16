@@ -53,6 +53,7 @@ with derived_event_fields as (
     from derived_event_fields
     left join user_first_event
         on derived_event_fields.user_pseudo_id = user_first_event.user_pseudo_id
+        and derived_event_fields.source_relation = user_first_event.source_relation
 
     group by 1, 2, 3, 4
 

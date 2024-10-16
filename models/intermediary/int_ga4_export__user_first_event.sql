@@ -16,10 +16,11 @@ first_user_source_medium as (
     -- use row_number() to prioritize non-null source/medium, ensuring one record per user
     select
         events.user_pseudo_id,
+        events.source_relation,
         lower(events.source_source) as first_user_source,
         lower(events.source_medium) as first_user_medium,
         row_number() over (
-            partition by events.user_pseudo_id
+            partition by events.user_pseudo_id, events.source_relation
             order by 
                 -- just in case, prioritize rows with non-null source_source and source_medium, since there can be multiple events with the same event_timestamp
                 case 
@@ -39,6 +40,7 @@ first_user_source_medium as (
 
 select
     user_pseudo_id,
+    source_relation,
     first_user_source,
     first_user_medium
 from first_user_source_medium

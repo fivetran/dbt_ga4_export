@@ -29,7 +29,7 @@ with event_base as (
 
     select 
         *,
-        lag(event_timestamp) over (partition by user_pseudo_id, platform order by event_timestamp) as previous_event_timestamp
+        lag(event_timestamp) over (partition by user_pseudo_id, platform, source_relation order by event_timestamp) as previous_event_timestamp
 
     from event_base
 
@@ -40,7 +40,7 @@ with event_base as (
         -- Only calculate for 'user_engagement' events
         case 
             when event_name = 'user_engagement' 
-                and lag(event_timestamp) over (partition by user_pseudo_id order by event_timestamp) is not null 
+                and lag(event_timestamp) over (partition by user_pseudo_id, source_relation order by event_timestamp) is not null 
             then
                 {{ dbt.datediff('previous_event_timestamp', 'event_timestamp', 'second') }} * 1000 -- Convert to milliseconds
             else null
@@ -61,7 +61,7 @@ with event_base as (
                 then 1 
                 else 0 
             end
-        ) over (partition by user_pseudo_id, platform order by event_timestamp rows between unbounded preceding and current row) as derived_session_index
+        ) over (partition by user_pseudo_id, platform, source_relation order by event_timestamp rows between unbounded preceding and current row) as derived_session_index
 
     from lagged_events
 
