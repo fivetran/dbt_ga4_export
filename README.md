@@ -27,6 +27,7 @@ These tables are designed to replicate common GA4 reports. The following provide
 | ga4_export__user_acquisition_first_user_source_medium_report     | user_acquisition_first_user_source_medium_report       |  Tracks metrics including sessions, events, users, and revenue by first user medium and source. |
 | ga4_export__events_report                                        | events_report                                         | Summarizes event counts, revenue generated from events, and user engagement metrics across the app or website.        |
 | ga4_export__conversions_report                                   | conversions_report                                    | Tracks key events, user actions, total revenue, and other metrics for just key events. Offers insights into conversion behavior.            |
+| [ga4_export__sessions_enhanced]((https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__sessions_enhanced))                                   | n/a                                    | Tracks user sessions across the app or website, summarizing session engagement, start and end times, total events, and more to analyze user behavior during sessions.            |
 
 <!--section-end-->
 

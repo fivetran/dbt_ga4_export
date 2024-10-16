@@ -22,13 +22,14 @@ sessions_aggregate as (
     -- Aggregate session-level data
     select
         session_id,
+        source_relation,
         min(event_timestamp) as session_start_time,
         max(event_timestamp) as session_end_time,
         sum(engagement_time_msec) / 1000 as total_session_engagement_time_sec,
         count(event_id) as total_events,
         max(case when is_session_engaged then 1 else 0 end) as is_engaged_session
     from derived_event_fields
-    group by session_id
+    group by 1,2
 )
 
 select *
