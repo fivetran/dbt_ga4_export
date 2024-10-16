@@ -1,8 +1,4 @@
-{{
-    config(
-        enabled=var('key_events', none) is not none and var('key_events') != []
-    )
-}}
+{{ config(enabled=var('key_events') != [] ) }}
 
 {{
     config(

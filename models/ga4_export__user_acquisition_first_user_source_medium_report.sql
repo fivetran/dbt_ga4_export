@@ -37,7 +37,7 @@ with derived_event_fields as (
     
     select
         event_date,
-        source_relation,
+        derived_event_fields.source_relation,
         user_first_event.first_user_medium,
         user_first_event.first_user_source,
         count(distinct case when is_session_engaged then session_id end) as engaged_sessions,
@@ -48,7 +48,6 @@ with derived_event_fields as (
         count(distinct derived_event_fields.user_pseudo_id) as total_users,
         coalesce(sum(ecommerce_purchase_revenue),0) as total_revenue,
         round(cast(sum(case when is_session_engaged then engagement_time_msec else 0 end)/ nullif(count(distinct session_id),0) as {{ dbt.type_numeric() }}), 2) as user_engagement_duration
-
 
     from derived_event_fields
     left join user_first_event
