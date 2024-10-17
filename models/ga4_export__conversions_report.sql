@@ -1,16 +1,11 @@
-{{ config(enabled=var('key_events') != [] ) }}
-
 {{
     config(
+        enabled=var('key_events',[]) != [],
         materialized='incremental' if ga4_export.is_incremental_compatible() else 'table',
         unique_key='unique_key',
         incremental_strategy='insert_overwrite' if target.type in ('bigquery', 'spark', 'databricks') else 'delete+insert',
-        partition_by={
-            "field": "event_date", 
-            "data_type": "date"
-            } if target.type not in ('spark','databricks') 
-            else ['event_date'],
-        cluster_by=['event_name', 'event_date'],
+        partition_by={"field": "event_date", "data_type": "date"} if target.type not in ('spark','databricks') else ['event_date'],
+        cluster_by=['event_name'],
         file_format='delta'
     )
 }}
@@ -21,7 +16,7 @@ with events_base as (
 
     select * 
     from {{ ref('stg_ga4_export__event') }}
-    where event_name in ({{ "'" ~ var('key_events') | join("', '") ~ "'" }})
+    where event_name in ({{ "'" ~ var('key_events',[]) | join("', '") ~ "'" }})
 
     {% if is_incremental() %}
     and event_date >= {{ ga4_export.ga4_export_lookback(from_date="max(event_date)", interval=7, datepart='day') }}

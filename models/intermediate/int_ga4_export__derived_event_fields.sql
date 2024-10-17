@@ -3,12 +3,8 @@
         materialized='incremental' if ga4_export.is_incremental_compatible() else 'table',
         unique_key='event_id',
         incremental_strategy='insert_overwrite' if target.type in ('bigquery', 'spark', 'databricks') else 'delete+insert',
-        partition_by={
-            "field": "event_date", 
-            "data_type": "date"
-            } if target.type not in ('spark','databricks') 
-            else ['event_date'],
-        cluster_by=['event_name', 'event_date'],
+        partition_by={"field": "event_date", "data_type": "date"} if target.type not in ('spark','databricks') else ['event_date'],
+        cluster_by=['event_name'],
         file_format='delta'
     )
 }}
@@ -38,30 +34,22 @@ with event_base as (
     select
         *,
         -- Only calculate for 'user_engagement' events
-        case 
-            when event_name = 'user_engagement' 
-                and lag(event_timestamp) over (partition by user_pseudo_id, source_relation order by event_timestamp) is not null 
-            then
-                {{ dbt.datediff('previous_event_timestamp', 'event_timestamp', 'second') }} * 1000 -- Convert to milliseconds
+        case when event_name = 'user_engagement' and lag(event_timestamp) over (partition by user_pseudo_id, source_relation order by event_timestamp) is not null 
+            then {{ dbt.datediff('previous_event_timestamp', 'event_timestamp', 'second') }} * 1000 -- Convert to milliseconds
             else null
         end as derived_engagement_time_msec,
 
         -- Create boolean for whether event is user_engagement to use in next CTE for deriving engaged_session
-        cast(case
-            when event_name = 'user_engagement' 
-            then 1 else 0
+        cast(case when event_name = 'user_engagement' 
+            then 1 
+            else 0
         end as boolean) as derived_is_engaged_event,
 
         -- Generate session index based on 30-minute inactivity
-        sum(
-            case 
-                -- check time difference in minutes
-                when {{ dbt.datediff('previous_event_timestamp', 'event_timestamp', 'minute')}} > 30 
-                    or previous_event_timestamp is null
-                then 1 
-                else 0 
-            end
-        ) over (partition by user_pseudo_id, platform, source_relation order by event_timestamp rows between unbounded preceding and current row) as derived_session_index
+        sum(case when {{ dbt.datediff('previous_event_timestamp', 'event_timestamp', 'minute')}} > 30 or previous_event_timestamp is null -- check time difference in minutes
+            then 1 
+            else 0 
+        end) over (partition by user_pseudo_id, platform, source_relation order by event_timestamp rows between unbounded preceding and current row) as derived_session_index
 
     from lagged_events
 

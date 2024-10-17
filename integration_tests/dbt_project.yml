@@ -14,6 +14,11 @@ vars:
     ga4_export_event_identifier: "event_data"
     key_events: ['purchase']
 
+models:
+  ga4_export:
+    staging:
+      +materialized: table
+
 dispatch:
   - macro_namespace: dbt_utils
     search_order: ['spark_utils', 'dbt_utils']

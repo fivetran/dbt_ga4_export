@@ -5,7 +5,6 @@ This is the initial release of the GA4 Export dbt package!
 This package models GA4 Export data from [Fivetran's connector](https://fivetran.com/docs/connectors/applications/google-analytics-4-export). It uses data in the format described by [this ERD](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#schemainformation).
 
 The main focus of the package is to transform the source event table into commonly used GA4 reports. The package includes the following:
-<!--section="ga4_export_model"-->
   - Materializes [GA4 Export staging and output models](https://fivetran.github.io/dbt_ga4_export/#!/overview/ga4_export_source/models/?g_v=1) which leverage data in the format described by [this ERD](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#schemainformation). 
   - The staging event table cleans, tests, and prepares your GA4 Export data from [Fivetran's connector](https://fivetran.com/docs/connectors/applications/google-analytics-4-export) by doing the following:
     - Renames fields for consistency and standardization. For example, `name` is renamed to `event_name`.

@@ -13,9 +13,9 @@
         <img src="https://img.shields.io/badge/Fivetran_Quickstart_Compatible%3F-yes-green.svg" /></a>
 </p>
 
-# GA4 Export dbt Package ([docs](https://github.com/fivetran/dbt_ga4_export))
+# GA4 Export dbt Package ([docs](https://fivetran.github.io/dbt_ga4_export/#!/overview))
 ## What does this dbt package do?
-- Produces modeled tables that leverage GA4 Export data from [Fivetran's connector](https://fivetran.com/docs/connectors/applications/google-analytics-4-export) in the format described by [this ERD](https://docs.google.com/presentation/d/1LQSEVYhS5pD2ut03bH68kvEBdLjmD9j1w9EV76fJKPE/edit#slide=id.g259e9319939_0_3).
+- Produces modeled tables that leverage GA4 Export data from [Fivetran's connector](https://fivetran.com/docs/connectors/applications/google-analytics-4-export) in the format described by [this ERD](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#schemainformation).
 
 <!--section="ga4_export_transformation_model"-->
 These tables are designed to replicate common GA4 reports. The following provides a list of all tables provided by this package along with their corresponding GA4 report.
@@ -23,12 +23,11 @@ These tables are designed to replicate common GA4 reports. The following provide
 
 | **Table**                                                       | **GA4 Report**                                        | **Description**                                                                                                     |
 |------------------------------------------------------------------|-------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-| ga4_export__traffic_acquisition_session_source_medium_report     | traffic_acquisition_session_source_medium_report       | Tracks metrics including sessions, events, users, and revenue by source and medium. |
-| ga4_export__user_acquisition_first_user_source_medium_report     | user_acquisition_first_user_source_medium_report       |  Tracks metrics including sessions, events, users, and revenue by first user medium and source. |
-| ga4_export__events_report                                        | events_report                                         | Summarizes event counts, revenue generated from events, and user engagement metrics across the app or website.        |
-| ga4_export__conversions_report                                   | conversions_report                                    | Tracks key events, user actions, total revenue, and other metrics for just key events. Offers insights into conversion behavior.            |
+| [ga4_export__traffic_acquisition_session_source_medium_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__traffic_acquisition_session_source_medium_report)     | traffic_acquisition_session_source_medium_report       | Tracks metrics including sessions, events, users, and revenue by source and medium. |
+| [ga4_export__user_acquisition_first_user_source_medium_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__user_acquisition_first_user_source_medium_report)     | user_acquisition_first_user_source_medium_report       |  Tracks metrics including sessions, events, users, and revenue by first user medium and source. |
+| [ga4_export__events_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__events_report)                                        | events_report                                         | Summarizes event counts, revenue generated from events, and user engagement metrics across the app or website.        |
+| [ga4_export__conversions_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__conversions_report)                                   | conversions_report                                    | Tracks key events, user actions, total revenue, and other metrics for just key events. Offers insights into conversion behavior.            |
 | [ga4_export__sessions_enhanced]((https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__sessions_enhanced))                                   | n/a                                    | Tracks user sessions across the app or website, summarizing session engagement, start and end times, total events, and more to analyze user behavior during sessions.            |
-
 <!--section-end-->
 
 
@@ -37,16 +36,13 @@ These tables are designed to replicate common GA4 reports. The following provide
 ### Step 1: Prerequisites
 To use this dbt package, you must have the following:
 
-- At least one Fivetran GA4 Export connector syncing data into your destination.
+- At least one [Fivetran GA4 Export](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#googleanalytics4export) connector syncing data into your destination.
 - A **BigQuery**, **Snowflake**, **Redshift**, **PostgreSQL**, or **Databricks** destination.
 
-#### Databricks dispatch configuration
-If you are using a Databricks destination with this package, you must add the following (or a variation of the following) dispatch configuration within your `dbt_project.yml`. This is required in order for the package to accurately search for macros within the `dbt-labs/spark_utils` then the `dbt-labs/dbt_utils` packages respectively.
-```yml
-dispatch:
-  - macro_namespace: dbt_utils
-    search_order: ['spark_utils', 'dbt_utils']
-```
+#### Connector Restrictions
+This package is suited for connectors using the default *column* sync mode, as opposed to the *json* sync mode. Additionally, it assumes the underlying schema for the connector version synced after July 24, 2023.
+
+For more information on the underlying schema, please refer to the [connector docs](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#schemainformation) and [Google Analytic's documentation on the Export schema](https://support.google.com/analytics/answer/7029846?hl=en&ref_topic=9359001#zippy=%2Cevent).
 
 #### Database Incremental Strategies
 Many of the models in this package are materialized incrementally, so we have configured our models to work with the different strategies available to each supported warehouse.
@@ -67,15 +63,46 @@ packages:
   - package: fivetran/ga4_export
     version: [">=0.1.0", "<0.2.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
-#### Connector Restrictions
-This package is suited for connectors using the default *column* sync mode, as opposed to the *json* sync mode. Additionally, it assumes the underlying schema for the connector version synced after July 24, 2023.
 
-For more information on the underlying schema, please refer to the [connector docs](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#schemainformation) and [Google Analytic's documentation on the Export schema](https://support.google.com/analytics/answer/7029846?hl=en&ref_topic=9359001#zippy=%2Cevent).
+### Step 3: Define database and schema variables
+#### Single connector
+By default, this package runs using your destination and the `ga4_export` schema. If this is not where your GA4 Export data is (for example, if your GA4 Export schema is named `ga4_export_fivetran`), add the following configuration to your root `dbt_project.yml` file:
 
-#### Discrepanices Between GA4 Export vs GA4 Reports
+```yml
+vars:
+  ga4_export_database: your_database_name
+  ga4_export_schema: your_schema_name 
+```
+#### Union multiple connectors
+If you have multiple GA4 Export connectors in Fivetran and would like to use this package on all of them simultaneously, we have provided functionality to do so. The package will union all of the data together and pass the unioned table into the transformations. You will be able to see which source it came from in the `source_relation` column of each model. To use this functionality, you will need to set either the `ga4_export_union_schemas` OR `ga4_export_union_databases` variables (cannot do both) in your root `dbt_project.yml` file. Below are the variables and examples:
+
+```yml
+vars:
+    ga4_export_union_schemas: ['ga4_export_test_one', 'ga4_export_test_two']
+    ga4_export_union_databases: ['ga4_export_test_one', 'ga4_export_test_two']
+```
+
+The native `source.yml` connection set up in the package will not function when the union schema/database feature is utilized. Although the data will be correctly combined, you will not observe the sources linked to the package models in the Directed Acyclic Graph (DAG). This happens because the package includes only one defined `source.yml`.
+
+To connect your multiple schema/database sources to the package models, follow the steps outlined in the [Union Data Defined Sources Configuration](https://github.com/fivetran/dbt_fivetran_utils/tree/releases/v0.4.latest#union_data-source) section of the Fivetran Utils documentation for the union_data macro. This will ensure a proper configuration and correct visualization of connections in the DAG.
+
+### (Optional) Step 4: Additional configurations and data integrity notices
+
+#### Event Date Range
+Because of the typical volume of event data, you may want to limit this package's models to work with a recent date range of your GA4 Export data (however, note that all final models are materialized as [incremental](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/materializations#incremental) tables).
+
+By default, the package looks at all events since January 1, 2024. To change this start date, add the following variable to your `dbt_project.yml` file:
+
+```yml
+vars:
+  ga4_export:
+    ga4_export_date_start: 'yyyy-mm-dd' ## default is '2024-01-01'
+```
+
+#### Discrepancies Between GA4 Export vs GA4 Reports
 It’s common to see discrepancies when comparing GA4 exported data, which is used in this package, against GA4 reports (such as the ones in the GA4 UI). This can be due to various reasons, including the UI using sampled data, approximated cardinality for metrics, or the grain at which metrics are aggregated.
 
-For example, your GA4 `user_acquisition_first_user_source_medium` prebuilt report may show a daily event count of 6836 for a certain source and medium while the `ga4_export__user_acquisition_first_user_source_medium_report` model will show 6765.
+For example, your GA4 `user_acquisition_first_user_source_medium` prebuilt report with the GA4 UI may show a daily event count of 6836 for a certain source and medium while the `ga4_export__user_acquisition_first_user_source_medium_report` model from this dbt package will show 6765.
 
 For more information on why this may occur, please refer to the below articles (Including the official Google Analytic articles as well as 3rd party blogs): 
 
@@ -87,41 +114,12 @@ The GA4 Export Connector [syncs data from intraday tables](
 https://fivetran.com/docs/connectors/applications/google-analytics-4-export#syncingeventsfromintradaytables) throughout the day, and syncs daily tables at the end of the day. Events from the intraday tables are flagged by an `is_intraday` field in the `event` table. To avoid duplication and since the models in this package are built upon daily tables, we filter out the intraday events in the staging `stg_ga4_export` model.
 
 #### Key Events
-According to Google Analytics, a key event is an event that's particularly important to the success of your company.
-
-Because a key event may differ across companies, we require you specify your list of these events. Otherwise, the package will assume no key events. 
-
-This will be applied in the `ga4_export__conversions_report` model which filters the `events_report` to just key events. Additionally this will manifest in the `key_events` field in `ga4_export__traffic_acquisition_session_source_medium_report` and `ga4_export__user_acquisition_first_user_source_medium_report`.
-
-To configure your key events, add the following variable to your `dbt_project.yml` file.
+According to Google Analytics, a key event is an event that's particularly important to the success of your company. Because a key event may differ across companies, we require you specify your list of these events. Otherwise, the package will assume no key events. This will be applied in the `ga4_export__conversions_report` model which filters the `events_report` to just key events. Additionally this will manifest in the `key_events` field in `ga4_export__traffic_acquisition_session_source_medium_report` and `ga4_export__user_acquisition_first_user_source_medium_report`. To configure your key events, add the following variable to your `dbt_project.yml` file.
 
 ```yml
 vars:
   ga4_export:
     key_events: ['click','trial_signup'] # example key events
-```
-
-### Step 3: Define database and schema variables
-By default, this package runs using your destination and the `ga4_export` schema. If this is not where your GA4 Export data is (for example, if your GA4 Export schema is named `ga4_export_fivetran`), add the following configuration to your root `dbt_project.yml` file:
-
-```yml
-vars:
-    ga4_export_database: your_database_name
-    ga4_export_schema: your_schema_name 
-```
-
-### (Optional) Step 4: Additional configurations
-<details open><summary>Collapse/expand details</summary>
-
-#### Event Date Range
-Because of the typical volume of event data, you may want to limit this package's models to work with a recent date range of your GA4 Export data (however, note that all final models are materialized as [incremental](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/materializations#incremental) tables).
-
-By default, the package looks at all events since January 1, 2024. To change this start date, add the following variable to your `dbt_project.yml` file:
-
-```yml
-vars:
-  ga4_export:
-    ga4_export_date_start: 'yyyy-mm-dd' 
 ```
 
 ##### Lookback Window
@@ -153,10 +151,6 @@ If an individual source table has a different name than the package expects, add
 vars:
     ga4_export_<default_source_table_name>_identifier: your_table_name 
 ```
-
-### Event De-Duplication 
-
-</details>
 
 ### (Optional) Step 5: Orchestrate your models with Fivetran Transformations for dbt Core™
 <details><summary>Expand for details</summary>

@@ -6,7 +6,7 @@
 with events as (
 
     select 
-        count(unique_event_id) as total_events
+        count(event_id) as total_events
     from {{ ref('stg_ga4_export__event') }}
 ),
 
