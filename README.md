@@ -40,7 +40,7 @@ To use this dbt package, you must have the following:
 - A **BigQuery**, **Snowflake**, **Redshift**, **PostgreSQL**, or **Databricks** destination.
 
 #### Connector Restrictions
-This package is suited for connectors using the default *column* sync mode, as opposed to the *json* sync mode. Additionally, it assumes the underlying schema for the connector version synced after July 24, 2023.
+This package is suited for connectors using the [default *column* sync mode](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#columnsmode), as opposed to the *json* sync mode. Additionally, it assumes the [underlying schema](https://docs.google.com/presentation/d/1LQSEVYhS5pD2ut03bH68kvEBdLjmD9j1w9EV76fJKPE/edit#slide=id.g259e9319939_0_3) for the connector version synced *after* July 24, 2023.
 
 For more information on the underlying schema, please refer to the [connector docs](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#schemainformation) and [Google Analytic's documentation on the Export schema](https://support.google.com/analytics/answer/7029846?hl=en&ref_topic=9359001#zippy=%2Cevent).
 
