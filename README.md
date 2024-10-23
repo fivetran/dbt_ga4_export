@@ -17,14 +17,44 @@
 <!--section="ga4_export_transformation_model"-->
 These tables are designed to replicate common GA4 reports. The following provides a list of all tables provided by this package along with their corresponding GA4 report.
 > TIP: See more details about these tables in the package's [dbt docs site](https://fivetran.github.io/dbt_ga4_export/#!/overview?).
+These tables are designed to replicate common GA4 reports. The following provides a list of all tables provided by this package along with their corresponding GA4 report.
 
-| **Table** | **GA4 Report** | **Description**                                                                                                     |
-|---------------------|---------------------|---------------------------------------------------------------------------------------------------------------------|
-| [ga4_export__traffic_acquisition_session_source_medium_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__traffic_acquisition_session_source_medium_report)| [traffic_acquisition_session_source_medium_report](https://fivetran.com/docs/connectors/applications/google-analytics-4/prebuilt-reports#trafficacquisitionsessionsourcemediumreport)| Tracks metrics including sessions, events, users, and revenue by source and medium. |
-| [ga4_export__user_acquisition_first_user_source_medium_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__user_acquisition_first_user_source_medium_report)| [user_acquisition_first_user_source_medium_report](https://fivetran.com/docs/connectors/applications/google-analytics-4/prebuilt-reports#useracquisitionfirstusersourcemediumreport)| Tracks metrics including sessions, events, users, and revenue by first user medium and source. |
-| [ga4_export__events_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__events_report)| [events_report](https://fivetran.com/docs/connectors/applications/google-analytics-4/prebuilt-reports#eventsreport)| Summarizes event counts, revenue generated from events, and user engagement metrics across the app or website.        |
-| [ga4_export__conversions_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__conversions_report)| [conversions_report](https://fivetran.com/docs/connectors/applications/google-analytics-4/prebuilt-reports#keyeventsreport)| Tracks key events, user actions, total revenue, and other metrics for key events. Offers insights into conversion behavior. |
-| [ga4_export__sessions_enhanced](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__sessions_enhanced)| n/a | This is not built off a standard report. It tracks user sessions across the app or website, summarizing session engagement, start and end times, total events, and more to analyze user behavior. |
+<table style="table-layout: fixed; width: 100%;">
+  <thead>
+    <tr>
+      <th style="width: 30%;"><b>Table</b></th>
+      <th style="width: 30%;"><b>GA4 Report</b></th>
+      <th style="width: 40%;"><b>Description</b></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__traffic_acquisition_session_source_medium_report">ga4_export__traffic_acquisition_session_source_medium_report</a></td>
+      <td><a href="https://fivetran.com/docs/connectors/applications/google-analytics-4/prebuilt-reports#trafficacquisitionsessionsourcemediumreport">traffic_acquisition_session_source_medium_report</a></td>
+      <td>Tracks metrics including sessions, events, users, and revenue by source and medium.</td>
+    </tr>
+    <tr>
+      <td><a href="https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__user_acquisition_first_user_source_medium_report">ga4_export__user_acquisition_first_user_source_medium_report</a></td>
+      <td><a href="https://fivetran.com/docs/connectors/applications/google-analytics-4/prebuilt-reports#useracquisitionfirstusersourcemediumreport">user_acquisition_first_user_source_medium_report</a></td>
+      <td>Tracks metrics including sessions, events, users, and revenue by first user medium and source.</td>
+    </tr>
+    <tr>
+      <td><a href="https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__events_report">ga4_export__events_report</a></td>
+      <td><a href="https://fivetran.com/docs/connectors/applications/google-analytics-4/prebuilt-reports#eventsreport">events_report</a></td>
+      <td>Summarizes event counts, revenue generated from events, and user engagement metrics across the app or website.</td>
+    </tr>
+    <tr>
+      <td><a href="https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__conversions_report">ga4_export__conversions_report</a></td>
+      <td><a href="https://fivetran.com/docs/connectors/applications/google-analytics-4/prebuilt-reports#keyeventsreport">conversions_report</a></td>
+      <td>Tracks key events, user actions, total revenue, and other metrics for key events. Offers insights into conversion behavior.</td>
+    </tr>
+    <tr>
+      <td><a href="https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__sessions_enhanced">ga4_export__sessions_enhanced</a></td>
+      <td>n/a</td>
+      <td>This is not built off a standard report. It tracks user sessions across the app or website, summarizing session engagement, start and end times, total events, and more to analyze user behavior.</td>
+    </tr>
+  </tbody>
+</table>
 
 <!--section-end-->
 
