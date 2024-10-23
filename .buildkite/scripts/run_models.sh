@@ -18,18 +18,18 @@ cd integration_tests
 dbt deps
 if [ "$db" = "databricks-sql" ]; then
 # Normal dbt run with full refresh
-dbt seed --vars '{ga4_schema: ga4_export_sqlw_tests}' --target "$db" --full-refresh
-dbt compile --vars '{ga4_schema: ga4_export_sqlw_tests}' --target "$db"
-dbt run --vars '{ga4_schema: ga4_export_sqlw_tests}' --target "$db" --full-refresh
-dbt test --vars '{ga4_schema: ga4_export_sqlw_tests}' --target "$db"
+dbt seed --vars '{ga4_export_schema: ga4_export_sqlw_tests}' --target "$db" --full-refresh
+dbt compile --vars '{ga4_export_schema: ga4_export_sqlw_tests}' --target "$db"
+dbt run --vars '{ga4_export_schema: ga4_export_sqlw_tests}' --target "$db" --full-refresh
+dbt test --vars '{ga4_export_schema: ga4_export_sqlw_tests}' --target "$db"
 
 # Normal dbt run without full refresh
-dbt run --vars '{ga4_schema: ga4_export_sqlw_tests}' --target "$db"
-dbt test --vars '{ga4_schema: ga4_export_sqlw_tests}'  --target "$db"
+dbt run --vars '{ga4_export_schema: ga4_export_sqlw_tests}' --target "$db"
+dbt test --vars '{ga4_export_schema: ga4_export_sqlw_tests}'  --target "$db"
 
 # dbt run with key_events variable
-dbt run --vars '{ga4_schema: ga4_export_sqlw_tests, key_events: ['purchase']}' --target "$db"
-dbt test --vars '{ga4_schema: ga4_export_sqlw_tests}' --target "$db"
+dbt run --vars '{ga4_export_schema: ga4_export_sqlw_tests, key_events: ['purchase']}' --target "$db"
+dbt test --vars '{ga4_export_schema: ga4_export_sqlw_tests}' --target "$db"
 
 else
 # Normal dbt run with full refresh
