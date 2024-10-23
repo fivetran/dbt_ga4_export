@@ -20,11 +20,12 @@ These tables are designed to replicate common GA4 reports. The following provide
 
 | **Table**                                                       | **GA4 Report**                                        | **Description**                                                                                                     |
 |------------------------------------------------------------------|-------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-| [ga4_export__traffic_acquisition_session_source_medium_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__traffic_acquisition_session_source_medium_report)     | traffic_acquisition_session_source_medium_report       | Tracks metrics including sessions, events, users, and revenue by source and medium. |
-| [ga4_export__user_acquisition_first_user_source_medium_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__user_acquisition_first_user_source_medium_report)     | user_acquisition_first_user_source_medium_report       |  Tracks metrics including sessions, events, users, and revenue by first user medium and source. |
-| [ga4_export__events_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__events_report)                                        | events_report                                         | Summarizes event counts, revenue generated from events, and user engagement metrics across the app or website.        |
-| [ga4_export__conversions_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__conversions_report)                                   | conversions_report                                    | Tracks key events, user actions, total revenue, and other metrics for just key events. Offers insights into conversion behavior.            |
-| [ga4_export__sessions_enhanced](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__sessions_enhanced)                                   | n/a                                    | Tracks user sessions across the app or website, summarizing session engagement, start and end times, total events, and more to analyze user behavior during sessions.            |
+| [ga4_export__traffic_acquisition_session_source_medium_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__traffic_acquisition_session_source_medium_report)     | [traffic_acquisition_session_source_medium_report](https://fivetran.com/docs/connectors/applications/google-analytics-4/prebuilt-reports#trafficacquisitionsessionsourcemediumreport)       | Tracks metrics including sessions, events, users, and revenue by source and medium. |
+| [ga4_export__user_acquisition_first_user_source_medium_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__user_acquisition_first_user_source_medium_report)     | [user_acquisition_first_user_source_medium_report](https://fivetran.com/docs/connectors/applications/google-analytics-4/prebuilt-reports#useracquisitionfirstusersourcemediumreport)       | Tracks metrics including sessions, events, users, and revenue by first user medium and source. |
+| [ga4_export__events_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__events_report)                                        | [events_report](https://fivetran.com/docs/connectors/applications/google-analytics-4/prebuilt-reports#eventsreport)                                         | Summarizes event counts, revenue generated from events, and user engagement metrics across the app or website.        |
+| [ga4_export__conversions_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__conversions_report)                                   | [conversions_report](https://fivetran.com/docs/connectors/applications/google-analytics-4/prebuilt-reports#keyeventsreport)                                    | Tracks key events, user actions, total revenue, and other metrics for key events. Offers insights into conversion behavior. |
+| [ga4_export__sessions_enhanced](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__sessions_enhanced)                                   | n/a                                    | This is not built off a standard report. It tracks user sessions across the app or website, summarizing session engagement, start and end times, total events, and more to analyze user behavior. |
+
 <!--section-end-->
 
 
@@ -39,7 +40,7 @@ To use this dbt package, you must have the following:
 #### Connector Restrictions
 This package is suited for connectors using the [default *column* sync mode](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#columnsmode), as opposed to the *json* sync mode. Additionally, it assumes the [underlying schema](https://docs.google.com/presentation/d/1LQSEVYhS5pD2ut03bH68kvEBdLjmD9j1w9EV76fJKPE/edit#slide=id.g259e9319939_0_3) for the connector version synced *after* July 24, 2023.
 
-For more information on the underlying schema, please refer to the [connector docs](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#schemainformation) and [Google Analytic's documentation on the Export schema](https://support.google.com/analytics/answer/7029846?hl=en&ref_topic=9359001#zippy=%2Cevent).
+For more information on the underlying schema, please refer to the [connector docs](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#schemainformation) and [Google Analytics' documentation on the Export schema](https://support.google.com/analytics/answer/7029846?hl=en&ref_topic=9359001#zippy=%2Cevent).
 
 #### Database Incremental Strategies
 Many of the models in this package are materialized incrementally, so we have configured our models to work with the different strategies available to each supported warehouse.
@@ -101,10 +102,10 @@ It’s common to see discrepancies when comparing GA4 exported data, which is us
 
 For example, your GA4 `user_acquisition_first_user_source_medium` prebuilt report with the GA4 UI may show a daily event count of 6836 for a certain source and medium while the `ga4_export__user_acquisition_first_user_source_medium_report` model from this dbt package will show 6765.
 
-For more information on why this may occur, please refer to the below articles (Including the official Google Analytic articles as well as 3rd party blogs): 
+For more information on why this may occur, please refer to the below articles (Including the official Google Analytics articles as well as 3rd party blogs): 
 
-- https://developers.google.com/analytics/blog/2023/bigquery-vs-ui
-- https://www.cardinalpath.com/blog/ga4-and-bigquery-why-might-data-not-match 
+- [BigQuery export vs UI](https://developers.google.com/analytics/blog/2023/bigquery-vs-ui)
+- [GA4 and BigQuery: why might data not match?](https://www.cardinalpath.com/blog/ga4-and-bigquery-why-might-data-not-match)
 
 #### Intraday Events
 The GA4 Export Connector [syncs data from intraday tables](

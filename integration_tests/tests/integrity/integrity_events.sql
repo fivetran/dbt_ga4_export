@@ -39,9 +39,7 @@ select
 from 
     events, event_reports, session_report, user_report
 where 
-    events.total_events != event_reports.total_events 
-    or events.total_events != session_report.total_events
-    or events.total_events != user_report.total_events
-    or event_reports.total_events != session_report.total_events
-    or event_reports.total_events != user_report.total_events
-    or session_report.total_events != user_report.total_events
+where 
+    LEAST(events.total_events, event_reports.total_events, session_report.total_events, user_report.total_events) 
+    != 
+    GREATEST(events.total_events, event_reports.total_events, session_report.total_events, user_report.total_events)

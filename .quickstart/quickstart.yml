@@ -6,5 +6,6 @@ dbt_versions: ">=1.3.0 <2.0.0"
 public_models: [
   "ga4_export__events_report",
   "ga4_export__traffic_acquisition_session_source_medium_report",
-  "ga4_export__user_acquisition_first_user_source_medium_report"
+  "ga4_export__user_acquisition_first_user_source_medium_report",
+  "ga4_export__sessions_enhanced"
 ]

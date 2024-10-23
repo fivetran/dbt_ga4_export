@@ -7,17 +7,14 @@ models:
   ga4_export:
     +schema: "{{ 'ga4_export_sqlw_tests' if target.name == 'databricks-sql' else 'ga4_export' }}"
     # +schema: "ga4_export_{{ var('directed_schema','dev') }}" ## To be used for validation testing
+    staging:
+      +materialized: table
 
 vars:
   ga4_export:
     ga4_export_schema: ga4_export_integration_tests_3
     ga4_export_event_identifier: "event_data"
-    key_events: ['purchase']
-
-models:
-  ga4_export:
-    staging:
-      +materialized: table
+    # key_events: ['purchase'] # use when testing the key_events variable
 
 dispatch:
   - macro_namespace: dbt_utils
