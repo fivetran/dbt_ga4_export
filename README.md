@@ -26,6 +26,8 @@ These tables are designed to replicate common GA4 reports. The following provide
 | [ga4_export__conversions_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__conversions_report) | [conversions_report](https://fivetran.com/docs/connectors/applications/google-analytics-4/prebuilt-reports#keyeventsreport) | Tracks key events, user actions, total revenue, and other <br> metrics for key events. Offers insights into conversion behavior. |
 | [ga4_export__sessions_enhanced](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__sessions_enhanced) | n/a | This is not built off a standard report. It tracks user sessions <br> across the app or website, summarizing session engagement, start and end times, total events, and more to analyze user behavior. |
 
+### Materialized Models
+Each Quickstart transformation job run materializes 7 models if all components of this data model are enabled. This count includes all staging, intermediate, and final models materialized as `view`, `table`, or `incremental`.
 <!--section-end-->
 
 
@@ -34,11 +36,11 @@ These tables are designed to replicate common GA4 reports. The following provide
 ### Step 1: Prerequisites
 To use this dbt package, you must have the following:
 
-- At least one [Fivetran GA4 Export](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#googleanalytics4export) connector syncing data into your destination.
+- At least one [Fivetran GA4 Export](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#googleanalytics4export) connection syncing data into your destination.
 - A **BigQuery**, **Snowflake**, **Redshift**, **PostgreSQL**, or **Databricks** destination.
 
 #### Connector Restrictions
-This package is suited for connectors using the [default *column* sync mode](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#columnsmode), as opposed to the *json* sync mode. Additionally, it assumes the [underlying schema](https://docs.google.com/presentation/d/1LQSEVYhS5pD2ut03bH68kvEBdLjmD9j1w9EV76fJKPE/edit#slide=id.g259e9319939_0_3) for the connector version synced *after* July 24, 2023.
+This package is suited for connections using the [default *column* sync mode](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#columnsmode), as opposed to the *json* sync mode. Additionally, it assumes the [underlying schema](https://docs.google.com/presentation/d/1LQSEVYhS5pD2ut03bH68kvEBdLjmD9j1w9EV76fJKPE/edit#slide=id.g259e9319939_0_3) for the connector version synced *after* July 24, 2023.
 
 For more information on the underlying schema, please refer to the [connector docs](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#schemainformation) and [Google Analytics' documentation on the Export schema](https://support.google.com/analytics/answer/7029846?hl=en&ref_topic=9359001#zippy=%2Cevent).
 
@@ -63,7 +65,7 @@ packages:
 ```
 
 ### Step 3: Define database and schema variables
-#### Single connector
+#### Single connection
 By default, this package runs using your destination and the `ga4_export` schema. If this is not where your GA4 Export data is (for example, if your GA4 Export schema is named `ga4_export_fivetran`), add the following configuration to your root `dbt_project.yml` file:
 
 ```yml
@@ -71,8 +73,8 @@ vars:
   ga4_export_database: your_database_name
   ga4_export_schema: your_schema_name 
 ```
-#### Union multiple connectors
-If you have multiple GA4 Export connectors in Fivetran and would like to use this package on all of them simultaneously, we have provided functionality to do so. The package will union all of the data together and pass the unioned table into the transformations. You will be able to see which source it came from in the `source_relation` column of each model. To use this functionality, you will need to set either the `ga4_export_union_schemas` OR `ga4_export_union_databases` variables (cannot do both) in your root `dbt_project.yml` file. Below are the variables and examples:
+#### Union multiple connections
+If you have multiple GA4 Export connections in Fivetran and would like to use this package on all of them simultaneously, we have provided functionality to do so. The package will union all of the data together and pass the unioned table into the transformations. You will be able to see which source it came from in the `source_relation` column of each model. To use this functionality, you will need to set either the `ga4_export_union_schemas` OR `ga4_export_union_databases` variables (cannot do both) in your root `dbt_project.yml` file. Below are the variables and examples:
 
 ```yml
 vars:
