@@ -15,11 +15,13 @@ models:
             tests:
               - not_null
           - name: event_id
-            description: The key generated from a combination of 'user_pseudo_id', 'event_timestamp', 'event_name', and 'bundle_sequence_id'.
+            description: The key generated from a combination of 'user_pseudo_id', 'event_timestamp', 'event_name', 'bundle_sequence_id', and 'batch_event_index'.
           - name: fivetran_synced
             description: Timestamp indicating when this record was last synced from the source.
           - name: bundle_sequence_id
             description: The sequence ID of the bundle in which these events were uploaded.
+          - name: batch_event_index
+            description: A number indicating the sequential order of each event within a batch based on their order of occurrence on the device.
           - name: event_date
             description: The date when the event occurred.
           - name: device_category
