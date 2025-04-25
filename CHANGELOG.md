@@ -1,4 +1,5 @@
 # dbt_ga4_export v0.2.0
+[PR #7](https://github.com/fivetran/dbt_ga4_export/pull/7) includes the following changes:
 
 ## Breaking Change: 
 - Adds `batch_event_index` as a field that generates `event_id`. This is a breaking change for the upstream `stg_ga4_export__event` model and may impact the uniqueness of `event_id` downstream.
