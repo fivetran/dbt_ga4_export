@@ -12,9 +12,9 @@ models:
 
 vars:
   ga4_export:
-    ga4_export_schema: ga4_export_integration_tests_3
+    ga4_export_schema: ga4_export_integration_tests_4
     ga4_export_event_identifier: "event_data"
-    # key_events: ['purchase'] # use when testing the key_events variable
+    # key_events: ['purchase'] # use when testing the key_events variable and validation testing
 
 dispatch:
   - macro_namespace: dbt_utils
