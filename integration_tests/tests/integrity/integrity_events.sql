@@ -39,7 +39,6 @@ select
 from 
     events, event_reports, session_report, user_report
 where 
-where 
     LEAST(events.total_events, event_reports.total_events, session_report.total_events, user_report.total_events) 
     != 
     GREATEST(events.total_events, event_reports.total_events, session_report.total_events, user_report.total_events)
