@@ -32,7 +32,7 @@ final as (
         {{ dbt.concat(["coalesce(user_pseudo_id,'')","'_'","event_timestamp","'_'","event_name","'_'","bundle_sequence_id","'_'","coalesce(batch_event_index,0)"]) }} as event_id,
         cast(_fivetran_synced as {{ dbt.type_timestamp() }}) as fivetran_synced,
         cast(bundle_sequence_id as {{ dbt.type_string() }}) as bundle_sequence_id,
-        cast(batch_event_index as {{ dbt.type_string() }}) as batch_event_index,
+        cast(batch_event_index as {{ dbt.type_int() }}) as batch_event_index,
         cast(event_date as date) as event_date, -- renamed in macro due to reserved word
         device_category,
         geo_city,
