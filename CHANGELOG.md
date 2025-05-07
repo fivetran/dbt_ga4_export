@@ -1,8 +1,9 @@
 # dbt_ga4_export v0.2.0
 [PR #7](https://github.com/fivetran/dbt_ga4_export/pull/7) includes the following changes:
 
-## Breaking Change: 
-- Adds `batch_event_index` as a field that generates `event_id`. This is a breaking change for the upstream `stg_ga4_export__event` model and may impact the uniqueness of `event_id` downstream.
+## Breaking Change (`--full-refresh` required after upgrading) 
+- Incorporates `batch_event_index` into the generated `event_id` field. This update affects the upstream `stg_ga4_export__event` model and requires a full refresh of the downstream `int_ga4_export__derived_event_fields` model, where `event_id` is used as the unique key in incremental logic.
+- Resolved an issue where `event_id` was `null` in the `stg_ga4_export__event` model when user_pseudo_id was missing. This was fixed by using a coalesce to substitute empty strings during concatenation.
 
 ## Documentation
 - Added Quickstart model counts to README. ([#5](https://github.com/fivetran/dbt_ga4_export/pull/5))
