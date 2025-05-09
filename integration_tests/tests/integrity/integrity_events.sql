@@ -8,6 +8,7 @@ with events as (
     select 
         count(event_id) as total_events
     from {{ ref('stg_ga4_export__event') }}
+    where event_date >= {{ "'" ~ var('ga4_export_date_start',  '2024-01-01') ~ "'" }}
 ),
 
 event_reports as (
@@ -37,8 +38,7 @@ select
     session_report.total_events as session_report_total_events,
     user_report.total_events as user_report_total_events
 from 
-    events, event_reports, session_report, user_report
-where 
+    events, event_reports, session_report, user_report 
 where 
     LEAST(events.total_events, event_reports.total_events, session_report.total_events, user_report.total_events) 
     != 

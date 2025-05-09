@@ -10,6 +10,9 @@
 - Added Quickstart model counts to README. ([#5](https://github.com/fivetran/dbt_ga4_export/pull/5))
 - Corrected references to connectors and connections in the README. ([#5](https://github.com/fivetran/dbt_ga4_export/pull/5))
 
+## Under the Hood
+- Resolved bugs within the `consistency_conversions` and `integrity_events` validation tests.
+
 # dbt_ga4_export v0.1.0 
 This is the initial release of the GA4 Export dbt package!
 
