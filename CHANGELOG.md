@@ -1,8 +1,17 @@
-# dbt_ga4_export version.version
+# dbt_ga4_export v0.2.0
+[PR #8](https://github.com/fivetran/dbt_ga4_export/pull/8) includes the following changes:
+
+## Breaking Changes (`--full-refresh` required after upgrading) 
+- Addition of the `batch_event_index` field within the `stg_ga4_export__event` model.
+- Incorporates `batch_event_index` into the generated `event_id` field. This update affects the upstream `stg_ga4_export__event` model and requires a full refresh of the downstream `int_ga4_export__derived_event_fields` model, where `event_id` is used as the unique key in incremental logic.
+- Resolved an issue where `event_id` was `null` in the `stg_ga4_export__event` model when `user_pseudo_id` was missing. This was fixed by using a coalesce to substitute empty strings during concatenation.
 
 ## Documentation
 - Added Quickstart model counts to README. ([#5](https://github.com/fivetran/dbt_ga4_export/pull/5))
 - Corrected references to connectors and connections in the README. ([#5](https://github.com/fivetran/dbt_ga4_export/pull/5))
+
+## Under the Hood
+- Resolved bugs within the `consistency_conversions` and `integrity_events` validation tests.
 
 # dbt_ga4_export v0.1.0 
 This is the initial release of the GA4 Export dbt package!
