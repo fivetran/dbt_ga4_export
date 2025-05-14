@@ -15,7 +15,7 @@ models:
             tests:
               - not_null
           - name: event_id
-            description: The key generated from a combination of 'user_pseudo_id', 'event_timestamp', 'event_name', 'bundle_sequence_id', and 'batch_event_index'.
+            description: The key generated from a combination of 'user_pseudo_id' (if not available, returns an empty value), 'event_timestamp', 'event_name', 'bundle_sequence_id', and 'batch_event_index'.
           - name: fivetran_synced
             description: Timestamp indicating when this record was last synced from the source.
           - name: bundle_sequence_id
