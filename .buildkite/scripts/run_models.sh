@@ -19,6 +19,7 @@ dbt deps
 if [ "$db" = "databricks-sql" ]; then
 # Normal dbt run with full refresh
 dbt seed --vars '{ga4_export_schema: ga4_export_sqlw_tests}' --target "$db" --full-refresh
+dbt source freshness --vars '{ga4_export_schema: ga4_export_sqlw_tests}' --target "$db" || echo "...Only verifying freshness runs..."
 dbt compile --vars '{ga4_export_schema: ga4_export_sqlw_tests}' --target "$db"
 dbt run --vars '{ga4_export_schema: ga4_export_sqlw_tests}' --target "$db" --full-refresh
 dbt test --vars '{ga4_export_schema: ga4_export_sqlw_tests}' --target "$db"
@@ -34,6 +35,7 @@ dbt test --vars '{ga4_export_schema: ga4_export_sqlw_tests}' --target "$db"
 else
 # Normal dbt run with full refresh
 dbt seed --target "$db" --full-refresh
+dbt source freshness --target "$db" || echo "...Only verifying freshness runs..."
 dbt compile --target "$db"
 dbt run --target "$db" --full-refresh
 dbt test --target "$db"
