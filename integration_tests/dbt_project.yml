@@ -22,6 +22,8 @@ dispatch:
 
 
 seeds:
+  +docs:
+    show: False
   +quote_columns: "{{ true if target.type in ('redshift','postgres') else false }}"
   ga4_export_integration_tests:
     +column_types:
@@ -30,3 +32,4 @@ seeds:
 
 flags:
   send_anonymous_usage_stats: False
+  use_colors: True

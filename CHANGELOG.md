@@ -1,3 +1,4 @@
+
 # dbt_ga4_export v0.4.0
 [PR #12](https://github.com/fivetran/dbt_ga4_export/pull/12) includes the following updates:
 
@@ -7,6 +8,10 @@
   - Removed all `dbt_utils.unique_combination_of_columns` tests.
   - Removed all accepted_values tests.
   - Moved `loaded_at_field: _fivetran_synced` under the `config:` block in `src_ga4_export.yml`.
+  
+### Under the Hood
+- Updated conditions in `.github/workflows/auto-release.yml`.
+- Added `.github/workflows/generate-docs.yml`. 
 
 # dbt_ga4_export v0.3.0
 
