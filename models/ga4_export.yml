@@ -154,25 +154,25 @@ models:
     description: >
       Tracks user sessions across the app or website, summarizing session engagement, start and end times, total events, and more to analyze user behavior during sessions.
     columns:
-    - name: session_id
-      description: A unique identifier for each session, used as the primary key.
-      tests:
-        - not_null
-
-    - name: session_start_time
-      description: Timestamp indicating when the session started.
-
-    - name: session_end_time
-      description: Timestamp indicating when the session ended.
-
-    - name: total_session_engagement_time_sec
-      description: The total engagement time during the session, in seconds, calculated as the sum of engagement time across all events.
-
-    - name: total_events
-      description: The total number of events recorded during the session.
-
-    - name: is_engaged_session
-      description: A boolean indicating whether the session was considered "engaged," where 1 indicates an engaged session and 0 indicates a non-engaged session.
-
-    - name: source_relation
-      description: The source relation for the data.
+      - name: session_id
+        description: A unique identifier for each session, used as the primary key.
+        tests:
+          - not_null
+  
+      - name: session_start_time
+        description: Timestamp indicating when the session started.
+  
+      - name: session_end_time
+        description: Timestamp indicating when the session ended.
+  
+      - name: total_session_engagement_time_sec
+        description: The total engagement time during the session, in seconds, calculated as the sum of engagement time across all events.
+  
+      - name: total_events
+        description: The total number of events recorded during the session.
+  
+      - name: is_engaged_session
+        description: A boolean indicating whether the session was considered "engaged," where 1 indicates an engaged session and 0 indicates a non-engaged session.
+  
+      - name: source_relation
+        description: The source relation for the data.
