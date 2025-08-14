@@ -1,5 +1,5 @@
 name: 'ga4_export_integration_tests'
-version: '0.3.0'
+version: '0.4.0'
 config-version: 2
 profile: 'integration_tests'
 
@@ -22,11 +22,14 @@ dispatch:
 
 
 seeds:
+  +docs:
+    show: False
   +quote_columns: "{{ true if target.type in ('redshift','postgres') else false }}"
   ga4_export_integration_tests:
     +column_types:
       param_engagement_time_msec: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
-      stream_id: "{{ 'varchar(100)' if target.name in ('redshift', 'postgres') else 'string' }}"
+      stream_id: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
 
 flags:
   send_anonymous_usage_stats: False
+  use_colors: True
