@@ -1,3 +1,10 @@
+# dbt_ga4_export v0.5.0
+
+[PR #13](https://github.com/fivetran/dbt_ga4_export/pull/13) includes the following updates:
+
+## Features
+  - Increases the required dbt version upper limit to v3.0.0
+
 # dbt_ga4_export v0.4.0
 [PR #12](https://github.com/fivetran/dbt_ga4_export/pull/12) includes the following updates:
 
