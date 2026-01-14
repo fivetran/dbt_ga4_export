@@ -1,3 +1,15 @@
+# dbt_ga4_export v0.6.0
+
+[PR #14](https://github.com/fivetran/dbt_ga4_export/pull/14) includes the following updates:
+
+## Documentation
+- Updates README with standardized Fivetran formatting
+
+## Under the Hood
+- In the `.quickstart.yml` file:
+  - Adds `table_variables` for relevant sources to prevent missing sources from blocking downstream Quickstart models.
+  - Adds `supported_vars` for Quickstart UI customization,
+
 # dbt_ga4_export v0.5.0
 
 [PR #13](https://github.com/fivetran/dbt_ga4_export/pull/13) includes the following updates:
