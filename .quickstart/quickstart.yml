@@ -25,6 +25,6 @@ supported_vars:
   lookback_window:
     type: integer
     value: 7
-    description: "Number of days into the past that the models will look back to capture late-arriving records on incremental runs"
+    description: "Number of days into the past that incrememntal models will look back to capture late-arriving records on incremental runs"
     display_name: "Incremental Run Lookback Window (Days)"
 
