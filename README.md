@@ -1,5 +1,5 @@
 <!--section="ga4-export_transformation_model"-->
-# Ga4 Export dbt Package
+# GA4 Export dbt Package
 
 <p align="left">
     <a alt="License"
@@ -13,14 +13,14 @@
         <img src="https://img.shields.io/badge/Contributions-welcome-blueviolet" /></a>
 </p>
 
-This dbt package transforms data from Fivetran's Ga4 Export connector into analytics-ready tables.
+This dbt package transforms data from Fivetran's GA4 Export connector into analytics-ready tables.
 
 ## Resources
 
 - Number of materialized models¹: 7
 - Connector documentation
-  - [Ga4 Export connector documentation](https://fivetran.com/docs/connectors/applications/ga4-export)
-  - [Ga4 Export ERD](https://fivetran.com/docs/connectors/applications/ga4-export#schemainformation)
+  - [GA4 Export connector documentation](https://fivetran.com/docs/connectors/applications/google-analytics-4-export)
+  - [GA4 Export ERD](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#schemainformation)
 - dbt package documentation
   - [GitHub repository](https://github.com/fivetran/dbt_ga4_export)
   - [dbt Docs](https://fivetran.github.io/dbt_ga4_export/#!/overview)
@@ -29,8 +29,6 @@ This dbt package transforms data from Fivetran's Ga4 Export connector into analy
 
 ## What does this dbt package do?
 This package enables you to produce modeled tables that leverage GA4 Export data and replicate common GA4 reports. It creates enriched models with metrics focused on traffic acquisition, user acquisition, events, conversions, and session analysis.
-
-Note: This package is suited for connections using the [default *column* sync mode](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#columnsmode), as opposed to the *json* sync mode. Additionally, it assumes the [underlying schema](https://docs.google.com/presentation/d/1LQSEVYhS5pD2ut03bH68kvEBdLjmD9j1w9EV76fJKPE/edit#slide=id.g259e9319939_0_3) for the connector version synced *after* July 24, 2023.
 
 ### Output schema
 Final output tables are generated in the following target schema:
@@ -49,7 +47,7 @@ By default, this package materializes the following final tables:
 | [ga4_export__user_acquisition_first_user_source_medium_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__user_acquisition_first_user_source_medium_report) | Tracks metrics including sessions, events, users, and revenue by first user medium and source. |
 | [ga4_export__events_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__events_report) | Summarizes event counts, revenue generated from events, and user engagement metrics across the app or website. |
 | [ga4_export__conversions_report](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__conversions_report) | Tracks key events, user actions, total revenue, and other metrics for key events. Offers insights into conversion behavior. |
-| [ga4_export__sessions_enhanced](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__sessions_enhanced) | This is not built off a standard report. It tracks user sessions across the app or website, summarizing session engagement, start and end times, total events, and more to analyze user behavior. |
+| [ga4_export__sessions_enhanced](https://fivetran.github.io/dbt_ga4_export/#!/model/model.ga4_export.ga4_export__sessions_enhanced) | This model is not based on a standard report. It tracks user sessions across the app or website, summarizing engagement, start and end times, total events, and other metrics to support user behavior analysis. |
 
 ¹ Each Quickstart transformation job run materializes these models if all components of this data model are enabled. This count includes all staging, intermediate, and final models materialized as `view`, `table`, or `incremental`.
 
@@ -58,11 +56,11 @@ By default, this package materializes the following final tables:
 ## Prerequisites
 To use this dbt package, you must have the following:
 
-- At least one Fivetran Ga4 Export connection syncing data into your destination.
+- At least one Fivetran GA4 Export connection syncing data into your destination.
 - A **BigQuery**, **Snowflake**, **Redshift**, **PostgreSQL**, or **Databricks** destination.
 
 #### Connector Restrictions
-This package is suited for connections using the [default *column* sync mode](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#columnsmode), as opposed to the *json* sync mode. Additionally, it assumes the [underlying schema](https://docs.google.com/presentation/d/1LQSEVYhS5pD2ut03bH68kvEBdLjmD9j1w9EV76fJKPE/edit#slide=id.g259e9319939_0_3) for the connector version synced *after* July 24, 2023.
+This package is designed for connections using the [default *column* sync mode](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#columnsmode), not the *json* sync mode. It also assumes the [underlying schema](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#schemainformation) corresponds to connector versions synced after July 24, 2023.
 
 For more information on the underlying schema, please refer to the [connector docs](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#schemainformation) and [Google Analytics' documentation on the Export schema](https://support.google.com/analytics/answer/7029846?hl=en&ref_topic=9359001#zippy=%2Cevent).
 
