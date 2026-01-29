@@ -17,7 +17,7 @@ supported_vars:
     display_name: "Key Events"
 
   ga4_export_date_start:
-    type: string
+    type: date
     value: "2024-01-01"
     description: "Start date for the window of data to transform (YYYY-MM-DD format)"
     display_name: "Date Range Start"

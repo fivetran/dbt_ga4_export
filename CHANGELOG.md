@@ -1,3 +1,10 @@
+# dbt_ga4_export v0.6.1
+
+[PR #15](https://github.com/fivetran/dbt_ga4_export/pull/15) includes the following updates:
+
+## Under the Hood
+- Adjusts the data type of `ga4_export_date_start` in the `quickstart.yml` from string to date.
+
 # dbt_ga4_export v0.6.0
 
 [PR #14](https://github.com/fivetran/dbt_ga4_export/pull/14) includes the following updates:
