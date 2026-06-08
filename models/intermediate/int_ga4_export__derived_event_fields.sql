@@ -25,7 +25,7 @@ with event_base as (
 
     select 
         *,
-        lag(event_timestamp) over (partition by user_pseudo_id, platform, source_relation order by event_timestamp) as previous_event_timestamp
+        lag(event_timestamp) over (partition by user_pseudo_id, platform {{ fivetran_utils.partition_by_source_relation(package_name='ga4_export') }} order by event_timestamp) as previous_event_timestamp
 
     from event_base
 
@@ -34,7 +34,7 @@ with event_base as (
     select
         *,
         -- Only calculate for 'user_engagement' events
-        case when event_name = 'user_engagement' and lag(event_timestamp) over (partition by user_pseudo_id, source_relation order by event_timestamp) is not null 
+        case when event_name = 'user_engagement' and lag(event_timestamp) over (partition by user_pseudo_id {{ fivetran_utils.partition_by_source_relation(package_name='ga4_export') }} order by event_timestamp) is not null 
             then {{ dbt.datediff('previous_event_timestamp', 'event_timestamp', 'second') }} * 1000 -- Convert to milliseconds
             else null
         end as derived_engagement_time_msec,
@@ -49,7 +49,7 @@ with event_base as (
         sum(case when {{ dbt.datediff('previous_event_timestamp', 'event_timestamp', 'minute')}} > 30 or previous_event_timestamp is null -- check time difference in minutes
             then 1 
             else 0 
-        end) over (partition by user_pseudo_id, platform, source_relation order by event_timestamp rows between unbounded preceding and current row) as derived_session_index
+        end) over (partition by user_pseudo_id, platform {{ fivetran_utils.partition_by_source_relation(package_name='ga4_export') }} order by event_timestamp rows between unbounded preceding and current row) as derived_session_index
 
     from lagged_events
 

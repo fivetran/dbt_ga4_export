@@ -17,10 +17,7 @@ fields as (
             )
         }}
         -- Using source relation to account for different union schemas and databases if needed
-        {{ fivetran_utils.source_relation(
-            union_schema_variable='ga4_export_union_schemas', 
-            union_database_variable='ga4_export_union_databases')
-        }}
+        {{ fivetran_utils.apply_source_relation(package_name='ga4_export') }}
     from base
 
 ),
