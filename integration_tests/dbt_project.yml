@@ -15,7 +15,7 @@ models:
 
 vars:
   ga4_export:
-    ga4_export_schema: ga4_export_integration_tests
+    ga4_export_schema: zz_dbt_avinash_seed
     ga4_export_event_identifier: "event_data"
     # key_events: ['purchase'] # use when testing the key_events variable
 
@@ -27,7 +27,7 @@ dispatch:
 seeds:
   +docs:
     show: False
-  +quote_columns: "{{ true if target.type in ('redshift','postgres') else false }}"
+  +quote_columns: "{{ true if target.type in ('redshift','postgres') or var('fivetran_using_source_casing', false) else false }}"
   ga4_export_integration_tests:
     +column_types:
       param_engagement_time_msec: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
