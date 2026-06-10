@@ -19,7 +19,7 @@ first_user_source_medium as (
         events.source_relation,
         lower(events.source_source) as first_user_source,
         lower(events.source_medium) as first_user_medium,
-        row_number() over (partition by events.user_pseudo_id, events.source_relation order by 
+        row_number() over (partition by events.user_pseudo_id {{ fivetran_utils.partition_by_source_relation('ga4_export', alias='events') }} order by
             -- just in case, prioritize rows with non-null source_source and source_medium, since there can be multiple events with the same event_timestamp
             case when events.source_source is not null and events.source_medium is not null then 1
             else 2
