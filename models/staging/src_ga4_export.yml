@@ -8,6 +8,7 @@ sources:
     loader: fivetran
 
     config:
+      enabled: "{{ var('ga4_export_sources', []) == [] }}"
       loaded_at_field: _fivetran_synced
       freshness:
         warn_after: {count: 72, period: hour}

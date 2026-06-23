@@ -79,30 +79,44 @@ Include the following ga4_export package version in your `packages.yml` file:
 ```yaml
 packages:
   - package: fivetran/ga4_export
-    version: [">=0.6.0", "<0.7.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=0.7.0", "<0.8.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 ### Define database and schema variables
-#### Single connection
+#### Option A: Single connection
 By default, this package runs using your destination and the `ga4_export` schema. If this is not where your GA4 Export data is (for example, if your GA4 Export schema is named `ga4_export_fivetran`), add the following configuration to your root `dbt_project.yml` file:
 
 ```yml
 vars:
-  ga4_export_database: your_database_name
-  ga4_export_schema: your_schema_name 
+    ga4_export_database: your_destination_name
+    ga4_export_schema: your_schema_name
 ```
-#### Union multiple connections
-If you have multiple GA4 Export connections in Fivetran and would like to use this package on all of them simultaneously, we have provided functionality to do so. The package will union all of the data together and pass the unioned table into the transformations. You will be able to see which source it came from in the `source_relation` column of each model. To use this functionality, you will need to set either the `ga4_export_union_schemas` OR `ga4_export_union_databases` variables (cannot do both) in your root `dbt_project.yml` file. Below are the variables and examples:
+
+#### Option B: Union multiple connections
+If you have multiple GA4 Export connections in Fivetran and would like to use this package on all of them simultaneously, we have provided functionality to do so. For each source table, the package will union all of the data together and pass the unioned table into the transformations. The `source_relation` column in each model indicates the origin of each record.
+
+To use this functionality, you will need to set the `ga4_export_sources` variable in your root `dbt_project.yml` file:
 
 ```yml
+# dbt_project.yml
+
 vars:
-    ga4_export_union_schemas: ['ga4_export_test_one', 'ga4_export_test_two']
-    ga4_export_union_databases: ['ga4_export_test_one', 'ga4_export_test_two']
+  ga4_export:
+    ga4_export_sources:
+      - database: connection_1_destination_name # Required
+        schema: connection_1_schema_name # Required
+        name: connection_1_source_name # Required only if following the step in the following subsection
+
+      - database: connection_2_destination_name
+        schema: connection_2_schema_name
+        name: connection_2_source_name
 ```
 
-The native `source.yml` connection set up in the package will not function when the union schema/database feature is utilized. Although the data will be correctly combined, you will not observe the sources linked to the package models in the Directed Acyclic Graph (DAG). This happens because the package includes only one defined `source.yml`.
+> Previous versions of this package employed two separate, mutually exclusive variables for unioning: `ga4_export_union_schemas` and `ga4_export_union_databases`. While these variables are still supported, `ga4_export_sources` is the recommended variable to configure.
 
-To connect your multiple schema/database sources to the package models, follow the steps outlined in the [Union Data Defined Sources Configuration](https://github.com/fivetran/dbt_fivetran_utils/tree/releases/v0.4.latest#union_data-source) section of the Fivetran Utils documentation for the union_data macro. This will ensure a proper configuration and correct visualization of connections in the DAG.
+#### Optional: Incorporate unioned sources into DAG
+
+If you use [Fivetran Transformations for dbt Core™](https://fivetran.com/docs/transformations/dbt#transformationsfordbtcore) and are unioning multiple GA4 Export connections, you can define your sources in a property `.yml` file, [using this as a template](https://github.com/fivetran/dbt_ga4_export/blob/main/models/staging/src_ga4_export.yml). Set the variable `has_defined_sources: true` under the GA4 Export namespace in your `dbt_project.yml`. Otherwise, your GA4 Export connections won't appear in your DAG. See the `union_connections` macro [documentation](https://github.com/fivetran/dbt_fivetran_utils/tree/releases/v0.4.latest#optional-union-connections-defined-sources-configuration) for full configuration details.
 
 ### (Optional) Additional configurations and data integrity notices
 
@@ -168,6 +182,14 @@ If an individual source table has a different name than the package expects, add
 ```yml
 vars:
     ga4_export_<default_source_table_name>_identifier: your_table_name 
+```
+
+#### Source casing for case-sensitive destinations
+By default, the package applies case-insensitive comparisons when resolving `source_relation` values. If your destination is case-sensitive and you want downstream transformations to respect the exact casing of your source database and schema names, set the following variable:
+
+```yml
+vars:
+    fivetran_using_source_casing: true
 ```
 
 ### (Optional) Orchestrate your models with Fivetran Transformations for dbt Core™
