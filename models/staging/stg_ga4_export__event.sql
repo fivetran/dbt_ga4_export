@@ -58,7 +58,7 @@ final as (
         param_medium,
         param_source,
         cast(param_ga_session_id as {{ dbt.type_string() }}) as param_ga_session_id,
-        param_ga_session_number,
+        cast(param_ga_session_number as {{ dbt.type_int() }}) as param_ga_session_number,
         cast(param_engagement_time_msec as {{ dbt.type_float() }}) as param_engagement_time_msec,
         param_engaged_session_event,
         cast(param_session_engaged as boolean) as param_session_engaged,
