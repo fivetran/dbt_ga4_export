@@ -3,7 +3,7 @@
 [PR #21](https://github.com/fivetran/dbt_ga4_export/pull/21) includes the following update:
 
 ## Bug Fix
-- Casts both `param_ga_session_number` and `derived_session_index` to strings individually within the `session_number` coalesce in `int_ga4_export__derived_event_fields`, rather than casting the result of the coalesce. `session_number` is used in a string concatenation to derive `session_id`, so both inputs must be cast to string before coalescing to avoid type promotion issues.
+- Casts both `param_ga_session_number` and `derived_session_index` to strings individually within the `session_number` coalesce in `int_ga4_export__derived_event_fields`, rather than casting the result of the coalesce. 
 
 ## Contributors
 - [@yuricavalcanti06](https://github.com/yuricavalcanti06) [#20](https://github.com/fivetran/dbt_ga4_export/pull/20)
