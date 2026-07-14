@@ -62,7 +62,7 @@ with event_base as (
         -- Coalesce param_session_engaged or use the derived_is_engaged_event as is_session_engaged
         cast(coalesce(param_session_engaged,derived_is_engaged_event) as boolean) as is_session_engaged,
         -- Coalesce param_ga_session_number or use the derived_session_index as the session_number
-        coalesce(param_ga_session_number, cast(derived_session_index as {{ dbt.type_string() }})) as session_number
+        coalesce(cast(param_ga_session_number as {{ dbt.type_string() }}), cast(derived_session_index as {{ dbt.type_string() }})) as session_number
 
     from derived_events
 
