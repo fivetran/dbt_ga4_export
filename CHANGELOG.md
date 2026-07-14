@@ -1,5 +1,10 @@
 # dbt_ga4_export v0.7.1
 
+[PR #20](https://github.com/fivetran/dbt_ga4_export/pull/20) includes the following updates:
+
+## Bug Fixes
+- Casts `param_ga_session_number` to a string in the staging event model so session-number fallback logic can coalesce it with derived session indexes when source schemas provide the field as a string.
+
 # dbt_ga4_export v0.7.0
 
 [PR #18](https://github.com/fivetran/dbt_ga4_export/pull/18) includes the following updates:

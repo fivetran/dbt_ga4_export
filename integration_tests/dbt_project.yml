@@ -1,5 +1,5 @@
 name: 'ga4_export_integration_tests'
-version: '0.7.0'
+version: '0.7.1'
 config-version: 2
 profile: 'integration_tests'
 
@@ -30,6 +30,7 @@ seeds:
   +quote_columns: "{{ true if target.type in ('redshift','postgres') or var('fivetran_using_source_casing', false) else false }}"
   ga4_export_integration_tests:
     +column_types:
+      param_ga_session_number: "{{ 'STRING' if target.type in ('bigquery', 'spark', 'databricks') else 'varchar' }}"
       param_engagement_time_msec: "{{ 'FLOAT64' if target.type == 'bigquery' else 'float' }}"
       stream_id: "{{ 'varchar(100)' if target.type in ('redshift', 'postgres') else 'string' }}"
 
