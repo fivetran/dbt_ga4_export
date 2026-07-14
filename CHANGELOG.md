@@ -1,3 +1,5 @@
+# dbt_ga4_export v0.7.1
+
 # dbt_ga4_export v0.7.0
 
 [PR #18](https://github.com/fivetran/dbt_ga4_export/pull/18) includes the following updates:
