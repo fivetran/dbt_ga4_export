@@ -71,5 +71,5 @@ with event_base as (
 select
     *,
     -- Concat the user_id with either the param_ga_session_id or derived session_number to generate session_id
-    {{ dbt.concat(["user_pseudo_id", "'_'", "coalesce(param_ga_session_id, session_number)"]) }} as session_id
+    {{ dbt.concat(["coalesce(user_pseudo_id, '')", "'_'", "coalesce(param_ga_session_id, session_number)"]) }} as session_id
 from final_sessionized

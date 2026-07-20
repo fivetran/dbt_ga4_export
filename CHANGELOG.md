@@ -1,9 +1,11 @@
 # dbt_ga4_export v0.7.1
 
-[PR #21](https://github.com/fivetran/dbt_ga4_export/pull/21) includes the following update:
+[PR #21](https://github.com/fivetran/dbt_ga4_export/pull/21) includes the following updates:
 
-## Bug Fix
-- Casts both `param_ga_session_number` and `derived_session_index` to strings individually within the `session_number` coalesce in `int_ga4_export__derived_event_fields`, rather than casting the result of the coalesce, to avoid data type collisions. 
+## Bug Fixes
+- Wraps `user_pseudo_id` in a `coalesce` when building `session_id` in `int_ga4_export__derived_event_fields` to prevent null test failures.
+- Updates the casting of `param_session_engaged` in `stg_ga4_export__event` with a `case` statement to map string values to booleans to avoid data type failures.
+- Casts both `param_ga_session_number` and `derived_session_index` to strings individually within the `session_number` coalesce in `int_ga4_export__derived_event_fields`, to avoid data type collisions.
 
 ## Contributors
 - [@yuricavalcanti06](https://github.com/yuricavalcanti06) [#20](https://github.com/fivetran/dbt_ga4_export/pull/20)
