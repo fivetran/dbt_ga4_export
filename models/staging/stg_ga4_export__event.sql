@@ -62,8 +62,8 @@ final as (
         cast(param_engagement_time_msec as {{ dbt.type_float() }}) as param_engagement_time_msec,
         param_engaged_session_event,
         case
-            when cast(param_session_engaged as {{ dbt.type_string() }}) in ('1', 'true') then true
-            when cast(param_session_engaged as {{ dbt.type_string() }}) in ('0', 'false') then false
+            when lower(cast(param_session_engaged as {{ dbt.type_string() }})) in ('1', 'true') then true
+            when lower(cast(param_session_engaged as {{ dbt.type_string() }})) in ('0', 'false') then false
             else null
         end as param_session_engaged,
         cast(stream_id as {{ dbt.type_string() }}) as stream_id,
