@@ -8,8 +8,8 @@
 - Casts both `param_ga_session_number` and `derived_session_index` to strings individually within the `session_number` coalesce in `int_ga4_export__derived_event_fields`, to avoid data type collisions.
 
 ## Contributors
-- [@yuricavalcanti06](https://github.com/yuricavalcanti06) [#20](https://github.com/fivetran/dbt_ga4_export/pull/20)
-- [@anorth848](https://github.com/anorth848) [#19](https://github.com/fivetran/dbt_ga4_export/issues/19) [#22](https://github.com/fivetran/dbt_ga4_export/issues/22) [#24](https://github.com/fivetran/dbt_ga4_export/issues/24)
+- [@yuricavalcanti06](https://github.com/yuricavalcanti06) ([#20](https://github.com/fivetran/dbt_ga4_export/pull/20))
+- [@anorth848](https://github.com/anorth848) ([#19](https://github.com/fivetran/dbt_ga4_export/issues/19)) ([#22](https://github.com/fivetran/dbt_ga4_export/issues/22)) ([#24](https://github.com/fivetran/dbt_ga4_export/issues/24))
 
 
 # dbt_ga4_export v0.7.0
