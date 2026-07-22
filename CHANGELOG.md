@@ -1,3 +1,17 @@
+# dbt_ga4_export v0.7.1
+
+[PR #21](https://github.com/fivetran/dbt_ga4_export/pull/21) includes the following updates:
+
+## Bug Fixes
+- Prevents null `session_id` test failures in `ga4_export__sessions_enhanced` when `user_pseudo_id` is null.
+- Ensures proper mapping of `param_session_engaged` string values to booleans in `stg_ga4_export__event`
+- Casts `param_ga_session_number` and `derived_session_index` as strings to ensure `session_number` coalesces as a string in `int_ga4_export__derived_event_fields` to avoid data type collisions.
+
+## Contributors
+- [@yuricavalcanti06](https://github.com/yuricavalcanti06) ([#20](https://github.com/fivetran/dbt_ga4_export/pull/20))
+- [@anorth848](https://github.com/anorth848) ([#19](https://github.com/fivetran/dbt_ga4_export/issues/19)) ([#22](https://github.com/fivetran/dbt_ga4_export/issues/22)) ([#24](https://github.com/fivetran/dbt_ga4_export/issues/24))
+
+
 # dbt_ga4_export v0.7.0
 
 [PR #18](https://github.com/fivetran/dbt_ga4_export/pull/18) includes the following updates:
