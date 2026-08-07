@@ -47,7 +47,7 @@ By default, this package materializes the following final tables:
 To use this dbt package, you must have the following:
 
 - At least one Fivetran GA4 Export connection syncing data into your destination.
-- A **BigQuery**, **Snowflake**, **Redshift**, **PostgreSQL**, or **Databricks** destination.
+- A **BigQuery**, **Snowflake**, **Redshift**, **PostgreSQL**, **Databricks**, or **DuckDB** destination.
 
 #### Connector Restrictions
 This package is designed for connections using the [default *column* sync mode](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#columnsmode), not the *json* sync mode. It also assumes the [underlying schema](https://fivetran.com/docs/connectors/applications/google-analytics-4-export#schemainformation) corresponds to connector versions synced after July 24, 2023.
