@@ -3,7 +3,7 @@
         materialized='incremental' if ga4_export.is_incremental_compatible() else 'table',
         unique_key='unique_key',
         incremental_strategy='insert_overwrite' if target.type in ('bigquery', 'spark', 'databricks') else 'delete+insert',
-        partition_by={"field": "event_date", "data_type": "date"} if target.type not in ('spark','databricks') else ['event_date'],
+        partition_by={"field": "event_date", "data_type": "date"} if target.type not in ('spark', 'databricks', 'duckdb') else ['event_date'],
         cluster_by=['session_medium', 'session_source'],
         file_format='delta'
     )

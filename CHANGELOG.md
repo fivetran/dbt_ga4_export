@@ -1,3 +1,10 @@
+# dbt_ga4_export v0.7.2
+
+[PR #25](https://github.com/fivetran/dbt_ga4_export/pull/25) includes the following updates:
+
+## Feature Updates
+- Adds DuckDB as a supported destination.
+
 # dbt_ga4_export v0.7.1
 
 [PR #21](https://github.com/fivetran/dbt_ga4_export/pull/21) includes the following updates:
