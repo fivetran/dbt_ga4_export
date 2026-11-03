@@ -34,9 +34,9 @@ traffic_acquisition_report as (
         source_source as session_source,
         count(distinct case when is_session_engaged then session_id end) as engaged_sessions,
         count(distinct session_id) as total_sessions,
-        round(cast(count(distinct case when is_session_engaged then session_id end)/ nullif(count(distinct session_id),0) as {{ dbt.type_numeric() }} ) ,2) as engagement_rate,
+        round(cast(count(distinct case when is_session_engaged then session_id end) * 1.0 / nullif(count(distinct session_id),0) as {{ dbt.type_numeric() }} ) ,2) as engagement_rate,
         count(event_id) as event_count,
-        round(cast((count(event_id)) / nullif(count(distinct session_id),0) as {{ dbt.type_numeric() }} ), 2) as events_per_session,
+        round(cast((count(event_id) * 1.0) / nullif(count(distinct session_id),0) as {{ dbt.type_numeric() }} ), 2) as events_per_session,
         count(case when event_name in ({{ "'" ~ var('key_events',[]) | join("', '") ~ "'" }}) then event_id end) as key_events, -- stipulate the names of your key events in your dbt_project.yml.
         coalesce(sum(ecommerce_purchase_revenue),0) as total_revenue,
         count(distinct user_pseudo_id) as total_users,
