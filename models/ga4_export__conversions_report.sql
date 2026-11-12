@@ -19,7 +19,7 @@ with events_base as (
     where event_name in ({{ "'" ~ var('key_events',[]) | join("', '") ~ "'" }})
 
     {% if is_incremental() %}
-    and event_date >= {{ ga4_export.ga4_export_lookback(from_date="max(event_date)", interval=7, datepart='day') }}
+    and event_date >= {{ fivetran_utils.lookback(from_date="max(event_date)", interval=7, datepart='day', safety_date='2024-01-01') }}
 
     {% else %}
     -- Initial load or full refresh

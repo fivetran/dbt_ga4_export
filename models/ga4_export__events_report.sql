@@ -15,7 +15,7 @@ with events_base as (
     from {{ ref('stg_ga4_export__event') }}
 
     {% if is_incremental() %}
-    where event_date >= {{ ga4_export.ga4_export_lookback(from_date="max(event_date)", interval=7, datepart='day') }}
+    where event_date >= {{ fivetran_utils.lookback(from_date="max(event_date)", interval=7, datepart='day', safety_date='2024-01-01') }}
 
     {% else %}
     -- Initial load or full refresh
