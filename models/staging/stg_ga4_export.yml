@@ -4,6 +4,12 @@ models:
       - name: stg_ga4_export__event
         description: >
           Each record represents an event triggered by a user in GA4, containing details such as event name, timestamp, user ID, and associated parameters.
+        data_tests:
+          - dbt_utils.unique_combination_of_columns:
+              arguments:
+                combination_of_columns:
+                  - source_relation
+                  - fivetran_id
         columns:
           - name: fivetran_id
             description: The unique identifier for this record.
