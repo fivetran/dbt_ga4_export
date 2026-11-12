@@ -1,4 +1,5 @@
 version: 0.7.3
+pr_number: 29
 under_the_hood:
 - description: Replaces the package's `ga4_export_lookback` macro with `fivetran_utils.lookback`, which uses
     the same logic. Calls pass `safety_date='2024-01-01'` to keep the previous default. Output
