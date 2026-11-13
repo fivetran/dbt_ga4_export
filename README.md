@@ -79,7 +79,7 @@ Include the following ga4_export package version in your `packages.yml` file:
 ```yaml
 packages:
   - package: fivetran/ga4_export
-    version: [">=0.8.0", "<0.9.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=0.9.0", "<0.10.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 ### Define database and schema variables
