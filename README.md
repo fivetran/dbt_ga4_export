@@ -15,7 +15,7 @@ This dbt package transforms data from Fivetran's GA4 Export connector into analy
   - [DAG](https://fivetran.github.io/dbt_ga4_export/#!/overview?g_v=1)
   - [Changelog](https://github.com/fivetran/dbt_ga4_export/blob/main/CHANGELOG.md)
 - dbt Core™ supported versions
-  - `>=1.3.0, <3.0.0`
+  - `>=1.10.0, <3.0.0`
 
 ## What does this dbt package do?
 This package enables you to produce modeled tables that leverage GA4 Export data and replicate common GA4 reports. It creates enriched models with metrics focused on traffic acquisition, user acquisition, events, conversions, and session analysis.
@@ -79,7 +79,7 @@ Include the following ga4_export package version in your `packages.yml` file:
 ```yaml
 packages:
   - package: fivetran/ga4_export
-    version: [">=0.7.0", "<0.8.0"] # we recommend using ranges to capture non-breaking changes automatically
+    version: [">=0.8.0", "<0.9.0"] # we recommend using ranges to capture non-breaking changes automatically
 ```
 
 ### Define database and schema variables
