@@ -1,6 +1,6 @@
 config-version: 2
 name: 'ga4_export'
-version: '0.9.0'
+version: '0.8.0'
 require-dbt-version: [">=1.10.0", "<3.0.0"]
 models:
   ga4_export:
