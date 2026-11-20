@@ -13,7 +13,7 @@ models:
         columns:
           - name: fivetran_id
             description: The unique identifier for this record.
-            tests:
+            data_tests:
               - not_null
           - name: event_id
             description: The key generated from a combination of 'user_pseudo_id' (if not available, returns an empty value), 'event_timestamp', 'event_name', 'bundle_sequence_id', and 'batch_event_index'.
