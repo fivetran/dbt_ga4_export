@@ -36,7 +36,7 @@ with derived_event_fields as (
         user_first_event.first_user_medium,
         user_first_event.first_user_source,
         count(distinct case when is_session_engaged then session_id end) as engaged_sessions,
-        round(cast(count(distinct case when is_session_engaged then session_id end)/ nullif(count(distinct session_id),0) as {{ dbt.type_numeric() }} ),2) as engagement_rate,
+        round(cast(count(distinct case when is_session_engaged then session_id end) * 1.0 / nullif(count(distinct session_id),0) as {{ dbt.type_numeric() }} ),2) as engagement_rate,
         count(event_id) as event_count,
         count(case when event_name in ({{ "'" ~ var('key_events',[]) | join("', '") ~ "'" }}) then event_id end) as key_events, -- stipulate the names of your key events in your dbt_project.yml.
         count(distinct case when event_name = 'first_visit' then derived_event_fields.user_pseudo_id end) as new_users,
